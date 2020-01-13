@@ -3,6 +3,9 @@ package myDataStructure;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import utils.Point3D;
 
 public class DNode extends HashMap<Integer, edge_data> implements node_data , Comparable<node_data>{
@@ -81,6 +84,14 @@ public class DNode extends HashMap<Integer, edge_data> implements node_data , Co
 		}
 	}
 
+	public DNode(JSONObject jsonObject) throws JSONException {
+		this.key = jsonObject.getInt("id");
+		String[] coords = jsonObject.getString("pos").split(",");
+		Double x = Double.parseDouble(coords[0]);
+		Double y = Double.parseDouble(coords[1]);
+		this.location = new Point3D(x, y);
+	}
+	
 	@Override
 	public int getKey() {
 		return key;

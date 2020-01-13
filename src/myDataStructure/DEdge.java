@@ -1,5 +1,8 @@
 package myDataStructure;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DEdge implements edge_data{
 	private int src;
 	private int dest;
@@ -56,6 +59,12 @@ public class DEdge implements edge_data{
 		this.weight = Double.parseDouble(arr[2]);
 		this.info = arr[3];
 		this.tag = Integer.parseInt(arr[4]);
+	}
+	
+	public DEdge(JSONObject jsonObject) throws JSONException {
+		this.src = jsonObject.getInt("src");
+		this.dest = jsonObject.getInt("dest");
+		this.weight = jsonObject.getDouble("w");
 	}
 	/**
 	 * @return - copy of this edge in the opposite direction

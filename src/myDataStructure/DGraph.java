@@ -4,12 +4,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import gui.GraphGui;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import gameClient.MyGameGUI;
 
 public class DGraph implements graph{
 	private HashMap<Integer, node_data> nodes = new HashMap<Integer, node_data>();
 	private int edges = 0;	
-	private GraphGui gui;
+	private MyGameGUI gui;
 	
 	public DGraph() {}
 	/**
@@ -23,6 +27,18 @@ public class DGraph implements graph{
 		for (String string : edges) {
 			DNode n = new DNode(string);
 			nodes.put(n.getKey(), n);
+		}
+	}
+	
+	public DGraph(JSONObject grapJSON) throws JSONException {
+		JSONArray nodesJson = grapJSON.getJSONArray("Nodes");
+		for (int i = 0; i < nodesJson.length(); i++) {
+			addNode(new DNode(nodesJson.getJSONObject(i)));
+		}
+		
+		JSONArray edgesJson = grapJSON.getJSONArray("Edges");
+		for (int i = 0; i < edgesJson.length(); i++) {
+			connect(new DEdge(edgesJson.getJSONObject(i)));
 		}
 	}
 	
@@ -156,7 +172,7 @@ public class DGraph implements graph{
 			gui.repaint();
 	}
 	
-	public void setGUI(GraphGui gui) {
+	public void setGUI(MyGameGUI gui) {
 		this.gui = gui;
 	}
 	
