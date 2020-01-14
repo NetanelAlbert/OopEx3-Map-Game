@@ -1,4 +1,4 @@
-package gameClient;
+package gameDataStructure;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,12 +20,16 @@ public class FruitUpdatingContainer extends Thread{
 	@Override
 	public void run() {
 		while (gameServer.isRunning()) {
-			updateFruits();
-					
+			updateFruits();	
+			try {
+				Thread.sleep(40);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void updateFruits() {
+	public void updateFruits() {
 		if (gameServer == null || serverInfo == null) {
 			// TODO how to continue if null
 			return;
@@ -53,10 +57,9 @@ public class FruitUpdatingContainer extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
-	public Fruit[] getFruits() {
+	public synchronized Fruit[] getFruits() {
 		return fruits;
 	}
 }

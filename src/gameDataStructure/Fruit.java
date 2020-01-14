@@ -1,11 +1,11 @@
-package gameClient;
+package gameDataStructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import utils.Point3D;
 
-public class Fruit {
+public class Fruit implements Comparable<Fruit>{
 	private double value;
 	private int type;
 	private Point3D pos;
@@ -31,6 +31,16 @@ public class Fruit {
 	public Point3D getPos() {
 		return pos;
 	}
+
+	@Override
+	public int compareTo(Fruit f) {
+		Double v = this.value;
+		return -v.compareTo(f.value);
+	}
 	
+	@Override
+	public String toString() {
+		return ""+value;
+	}
 	
 }

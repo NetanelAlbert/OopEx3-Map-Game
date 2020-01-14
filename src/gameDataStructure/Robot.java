@@ -1,4 +1,4 @@
-package gameClient;
+package gameDataStructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,5 +50,8 @@ public class Robot {
 		return pos;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return ""+id;
+	}
 }

@@ -1,4 +1,4 @@
-package myDataStructure;
+package grapgDataStructure;
 import java.util.Collection;
 /**
  * This interface represents a directional weighted graph.

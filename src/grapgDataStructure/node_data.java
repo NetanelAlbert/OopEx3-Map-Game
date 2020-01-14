@@ -1,4 +1,4 @@
-package myDataStructure;
+package grapgDataStructure;
 
 import utils.Point3D;
 /**

@@ -11,12 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import myDataStructure.DEdge;
-import myDataStructure.DGraph;
-import myDataStructure.DNode;
-import myDataStructure.edge_data;
-import myDataStructure.graph;
-import myDataStructure.node_data;
+import grapgDataStructure.DEdge;
+import grapgDataStructure.DGraph;
+import grapgDataStructure.DNode;
+import grapgDataStructure.edge_data;
+import grapgDataStructure.graph;
+import grapgDataStructure.node_data;
 
 /**
  * This empty class represents the set of graph-theory algorithms which should

@@ -1,11 +1,11 @@
-package gameClient;
+package gameDataStructure;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Server.game_service;
 import algorithms.Graph_Algo;
-import myDataStructure.node_data;
+import grapgDataStructure.node_data;
 import utils.Point3D;
 
 public class RobotsUpdatingContainer extends Thread {
@@ -33,7 +33,7 @@ public class RobotsUpdatingContainer extends Thread {
 			findStackRobot();
 
 			try {
-				Thread.sleep(30);
+				Thread.sleep(40);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -53,7 +53,7 @@ public class RobotsUpdatingContainer extends Thread {
 		}
 	}
 
-	private void updateRobots() {
+	public synchronized void updateRobots() {
 		if (gameServer == null || serverInfo == null) {
 			return;
 		}
@@ -72,10 +72,9 @@ public class RobotsUpdatingContainer extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	private node_data getNodeByLocation(Point3D point) {
+	private synchronized node_data getNodeByLocation(Point3D point) {
 		for (node_data n : algo.getGraph().getV()) {
 			Point3D p = n.getLocation();
 			if (Math.abs(p.x() - point.x()) < EPS && Math.abs(p.y() - point.y()) < EPS)
@@ -97,14 +96,22 @@ public class RobotsUpdatingContainer extends Thread {
 		this.stackRobotVertex = null;
 	}
 
-	public Robot getRobot(int i) {
+	public synchronized Robot getRobot(int i) {
 		if (robots == null || i >= robots.length)
 			return null;
 
 		return robots[i];
 	}
 
-	public Robot[] getRobots() {
+	public synchronized Robot getRobotByID(int id) {
+		for (Robot robot : robots) {
+			if(robot.getId() == id)
+				return robot;
+		}
+		return null;
+	}
+	
+	public synchronized Robot[] getRobots() {
 		return robots;
 	}
 

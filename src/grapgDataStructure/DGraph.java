@@ -1,4 +1,4 @@
-package myDataStructure;
+package grapgDataStructure;
 
 import java.util.Collection;
 import java.util.HashMap;

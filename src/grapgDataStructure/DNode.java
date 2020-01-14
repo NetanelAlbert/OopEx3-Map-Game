@@ -1,4 +1,4 @@
-package myDataStructure;
+package grapgDataStructure;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -139,16 +139,18 @@ public class DNode extends HashMap<Integer, edge_data> implements node_data , Co
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(key + ", " + location + ", "
-		+ weight + ", " + info + ", " + tag + " @ ");
-		for (Iterator<edge_data> it = values().iterator(); it.hasNext();) {
-			sb.append(it.next());
-			sb.append(" # ");
-		}
-		if (size() > 0)
-			sb.delete(sb.length() - 3, sb.length());
-		return sb.toString();
+		return ""+getKey();
 	}
+//		StringBuilder sb = new StringBuilder(key + ", " + location + ", "
+//		+ weight + ", " + info + ", " + tag + " @ ");
+//		for (Iterator<edge_data> it = values().iterator(); it.hasNext();) {
+//			sb.append(it.next());
+//			sb.append(" # ");
+//		}
+//		if (size() > 0)
+//			sb.delete(sb.length() - 3, sb.length());
+//		return sb.toString();
+//	}
 
 	@Override
 	public int compareTo(node_data o) {

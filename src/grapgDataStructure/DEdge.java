@@ -1,4 +1,4 @@
-package myDataStructure;
+package grapgDataStructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;

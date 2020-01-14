@@ -1,7 +1,8 @@
-package gameClient;
+package gameDataStructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import Server.game_service;
 
 public class ServerInfo {
 	private int fruits;
@@ -9,17 +10,21 @@ public class ServerInfo {
 	private int grade;
 	private int robots;
 	private String graph;
+	private game_service gameServer;
 	
-	public ServerInfo(JSONObject gameServer) throws JSONException {
-		updateServer(gameServer);
+	
+	public ServerInfo(game_service gameServer) throws JSONException {
+		this.gameServer = gameServer;
+		updateServer();
 	}
 	
-	public void updateServer(JSONObject gameServer) throws JSONException {
-		setFruits(gameServer.getInt("fruits"));
-		setMoves(gameServer.getInt("moves"));
-		setGrade(gameServer.getInt("grade"));
-		setRobots(gameServer.getInt("robots"));
-		setGraph(gameServer.getString("graph"));
+	public void updateServer() throws JSONException {
+		JSONObject serverJSON = new JSONObject(gameServer.toString()).getJSONObject("GameServer");
+		setFruits(serverJSON.getInt("fruits"));
+		setMoves(serverJSON.getInt("moves"));
+		setGrade(serverJSON.getInt("grade"));
+		setRobots(serverJSON.getInt("robots"));
+		setGraph(serverJSON.getString("graph"));
 	}
 	
 	public int getFruits() {
