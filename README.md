@@ -29,7 +29,7 @@ Open your IDE and make sure you see the project "OopEx3-Map-Game"
 
 ## Running the game
 
-In package [gameClient](https://github.com/NetanelAlbert/OopEx3-Map-Game/tree/master/src/gameClient) you'll find the calss [RunGame]()https://github.com/NetanelAlbert/OopEx3-Map-Game/blob/master/src/gameClient/RunGame.java.
+In package [gameClient](https://github.com/NetanelAlbert/OopEx3-Map-Game/tree/master/src/gameClient) you'll find the calss [RunGame](https://github.com/NetanelAlbert/OopEx3-Map-Game/blob/master/src/gameClient/RunGame.java).
 This class has a simple main function that will start the game as soon as you'll run it. enjoy.
 
 
