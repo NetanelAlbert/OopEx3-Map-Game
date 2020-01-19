@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/netal/OneDrive/eclipse-workspace/OOP_Ex3/lib/GameServer_v0.27.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -19,8 +19,8 @@ import grapgDataStructure.graph;
 import grapgDataStructure.node_data;
 
 /**
- * This empty class represents the set of graph-theory algorithms which should
- * be implemented as part of Ex2 - Do edit this class.
+ * This class holding a graph and make some algorithms on it,
+ * Plus adding the option to read / load graph from file
  * 
  * @author Netanel Albert
  *
@@ -55,12 +55,10 @@ public class Graph_Algo implements graph_algorithms {
 		}
 		if (content.length() > 0)
 			myGraph = new DGraph(content);
-
 	}
 
 	@Override
 	public void save(String file_name) {
-
 		try {
 			PrintWriter out = new PrintWriter(file_name);
 			out.print(myGraph);
@@ -69,7 +67,6 @@ public class Graph_Algo implements graph_algorithms {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
-
 	}
 
 	// Kosaraju’s DFS (two DFS traversals) - O(V+E)
@@ -275,6 +272,10 @@ public class Graph_Algo implements graph_algorithms {
 		return ans;
 	}
 
+	/**
+	 * 
+	 * @return list of the nodes keys
+	 */
 	private List<Integer> nodesToInts(List<node_data> list) {
 		List<Integer> ans = new ArrayList<Integer>();
 		for (node_data n : list) {
@@ -288,7 +289,7 @@ public class Graph_Algo implements graph_algorithms {
 		return copy(myGraph);
 	}
 	
-	public DGraph copy(graph g) {
+	private DGraph copy(graph g) {
 		DGraph copy = new DGraph();
 		Collection<node_data> nodes = g.getV();
 		// copy Nodes
@@ -306,7 +307,9 @@ public class Graph_Algo implements graph_algorithms {
 		return copy;
 	}
 	
-
+	/** 
+	 * @return a pointer to the graph field
+	 */
 	public DGraph getGraph() {
 		return myGraph;
 	}

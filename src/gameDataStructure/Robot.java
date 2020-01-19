@@ -2,9 +2,13 @@ package gameDataStructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import utils.Point3D;
 
+/**
+ * This class represent a robot in the game
+ * 
+ * @author Netanel Albert
+ */
 public class Robot {
 	private int id;
 	private double value;
@@ -15,11 +19,20 @@ public class Robot {
 	
 	boolean firstUpdate = true;
 	
+	/**
+	 * 
+	 * @param robot - JSON with the robot information
+	 * @throws JSONException - if 'robot' isn't contains the correct fields
+	 */
 	public Robot(JSONObject robot) throws JSONException {
 		updateRobot(robot);
 		firstUpdate = false;
 	}
-	
+	/**
+	 * 
+	 * @param robot - JSON with the robot information
+	 * @throws JSONException - if 'robot' isn't contains the correct fields
+	 */
 	public void updateRobot(JSONObject robot) throws JSONException {
 		int id = robot.getInt("id");
 		if(firstUpdate)
@@ -56,6 +69,9 @@ public class Robot {
 		return pos;
 	}
 	
+	/**
+	 * @return this.id as a string (for debugging)
+	 */
 	@Override
 	public String toString() {
 		return ""+id;

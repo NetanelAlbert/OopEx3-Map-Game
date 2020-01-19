@@ -17,19 +17,9 @@ public class DGraph implements graph{
 	
 	public DGraph() {}
 	/**
-	 * Construct from a String. Using for load graph from a text file
-	 * @param s - String in toString() format
+	 * Construct from a JSONObject. Using for load graph from a GameServer
+	 * @param grapJSON - JSONObject in the correct format, that contains "Nodes" & "Edges"
 	 */
-	public DGraph(String s) {
-		String[] parts = s.split(":\n");
-		this.edges = Integer.parseInt(parts[0]);
-		String[] edges = parts[1].split("\n");
-		for (String string : edges) {
-			DNode n = new DNode(string);
-			nodes.put(n.getKey(), n);
-		}
-	}
-	
 	public DGraph(JSONObject grapJSON) throws JSONException {
 		JSONArray nodesJson = grapJSON.getJSONArray("Nodes");
 		for (int i = 0; i < nodesJson.length(); i++) {
@@ -42,7 +32,19 @@ public class DGraph implements graph{
 		}
 	}
 	
-
+	/**
+	 * Construct from a String. Using for load graph from a text file
+	 * @param s - String in toString() format
+	 */
+	public DGraph(String s) {
+		String[] parts = s.split(":\n");
+		this.edges = Integer.parseInt(parts[0]);
+		String[] edges = parts[1].split("\n");
+		for (String string : edges) {
+			DNode n = new DNode(string);
+			nodes.put(n.getKey(), n);
+		}
+	}
 	@Override
 	public node_data getNode(int key) {
 		return nodes.get(key);
@@ -176,6 +178,9 @@ public class DGraph implements graph{
 		this.gui = gui;
 	}
 	
+	/**
+	 * Compare with another Dgraph by comparing the amount of edges and all the nodes.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof DGraph))
@@ -183,7 +188,7 @@ public class DGraph implements graph{
 		DGraph dGraph = (DGraph) obj;
 		return this.edges == dGraph.edges && this.nodes.equals(dGraph.nodes);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

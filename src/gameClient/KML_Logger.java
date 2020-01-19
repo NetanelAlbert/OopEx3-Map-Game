@@ -1,46 +1,44 @@
 package gameClient;
 
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import Server.game_service;
-import algorithms.Graph_Algo;
 import gameDataStructure.Fruit;
 import gameDataStructure.FruitsContainer;
 import gameDataStructure.Robot;
 import gameDataStructure.RobotsContainer;
+import grapgDataStructure.DGraph;
 import grapgDataStructure.edge_data;
-import grapgDataStructure.graph;
 import grapgDataStructure.node_data;
-import utils.Point3D;
 
+/**
+ * This class propose is to save the live game in KML format file that can be launch from Google earth
+ * 
+ * @author Netanel Albert
+ */
 public class KML_Logger {
-//	public static void main(String[] args) {
-//		KML_Logger kml = new KML_Logger(null, null, null, null);
-//		System.out.println(kml.log());
-//	}
 
-	private final Graph_Algo algo;
+	private final DGraph graph;
 	private final FruitsContainer fruits;
 	private final RobotsContainer robots;
 
 	private StringBuilder kmlOut = new StringBuilder();
 	private StringBuilder kmlRob = new StringBuilder();
 	private StringBuilder kmlFru = new StringBuilder();
-
-	private SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
-	private SimpleDateFormat sdfT = new SimpleDateFormat("hh:mm:ss");
 	
-	long time = 0;
-
-	public KML_Logger(Graph_Algo algo, FruitsContainer fruits, RobotsContainer robots) {
-		this.algo = algo;
+	private long time = 0;
+	
+	private String projectPath = System.getProperty("user.dir");
+	/**
+	 * This constructor is initialize the fields,
+	 * and write the graph to the StringBuilder.
+	 * 
+	 * @param graph - the graph to draw
+	 * @param fruits - the fruits to draw
+	 * @param robots - the robots to draw
+	 */
+	public KML_Logger(DGraph graph, FruitsContainer fruits, RobotsContainer robots) {
+		this.graph = graph;
 		this.fruits = fruits;
 		this.robots = robots;
 
@@ -52,13 +50,13 @@ public class KML_Logger {
 		
 	}
 	
-	public void writeRobots() {
+	private void writeRobots() {
 		for (Robot rob : robots.getRobots()) {
 			writeRobot(rob);
 		}
 	}
 	
-	public void writeFruits() {
+	private void writeFruits() {
 		for (Fruit fru : fruits.getFruits()) {
 			writeFruit(fru);
 		}
@@ -67,9 +65,9 @@ public class KML_Logger {
 	private void writeFruit(Fruit fru) {
 		kmlFru.append("<Placemark>\r\n");
 		
-		kmlFru.append("<TimeSpan>\r\n<begin>"); //start
+		kmlFru.append("<TimeSpan>\r\n<begin>");
 		kmlFru.append(time);
-		kmlFru.append("</begin>\r\n<end>"); //start
+		kmlFru.append("</begin>\r\n<end>");
 		kmlFru.append(time+1);
 		kmlFru.append("</end>\r\n</TimeSpan>\r\n");
 			
@@ -88,24 +86,12 @@ public class KML_Logger {
 	private void writeRobot(Robot rob) {
 		kmlRob.append("<Placemark>\r\n");
 		
-	
 		kmlRob.append("<TimeSpan>\r\n<begin>"); //start
-//		kmlRob.append(sdfD.format(start));
-//		kmlRob.append("T");
-//		kmlRob.append(sdfT.format(start));
-//		kmlRob.append("Z");
 		kmlRob.append(time);
 		kmlRob.append("</begin>\r\n<end>"); //start
-//		kmlRob.append(sdfD.format(end));
-//		kmlRob.append("T");
-//		kmlRob.append(sdfT.format(end));
-//		kmlRob.append("Z");
 		kmlRob.append(time+1);
 		kmlRob.append("</end>\r\n</TimeSpan>\r\n");
-		
-		
-		
-		
+
 		kmlRob.append("<styleUrl>#roboStyle</styleUrl>");
 		
 		kmlRob.append("<Point><coordinates>");
@@ -142,7 +128,7 @@ public class KML_Logger {
 		kmlOut.append("    <Style id=\"roboStyle\">\r\n");
 		kmlOut.append("      <IconStyle>\r\n");
 		kmlOut.append("        <Icon>\r\n<href>");
-		kmlOut.append("				data/robot.png");
+		kmlOut.append(projectPath+"/data/robot.png");
 		kmlOut.append("        </href>\r\n</Icon>\r\n");
 		kmlOut.append("      </IconStyle>\r\n");
 		kmlOut.append("    </Style>");
@@ -150,7 +136,7 @@ public class KML_Logger {
 		kmlOut.append("    <Style id=\"appleStyle\">\r\n");
 		kmlOut.append("      <IconStyle>\r\n");
 		kmlOut.append("        <Icon>\r\n<href>");
-		kmlOut.append("				data/apple.png");
+		kmlOut.append(projectPath+"/data/apple.png");
 		kmlOut.append("        </href>\r\n</Icon>\r\n");
 		kmlOut.append("      </IconStyle>\r\n");
 		kmlOut.append("    </Style>");
@@ -158,12 +144,10 @@ public class KML_Logger {
 		kmlOut.append("    <Style id=\"bananaStyle\">\r\n");
 		kmlOut.append("      <IconStyle>\r\n");
 		kmlOut.append("        <Icon>\r\n<href>");
-		kmlOut.append("				data/banana.png");
+		kmlOut.append(projectPath+"/data/banana.png");
 		kmlOut.append("        </href>\r\n</Icon>\r\n");
 		kmlOut.append("      </IconStyle>\r\n");
-		kmlOut.append("    </Style>");
-
-		
+		kmlOut.append("    </Style>");	
 	}
 
 	private void writeGraph() {
@@ -175,19 +159,13 @@ public class KML_Logger {
 		writeNodes();
 
 		kmlOut.append("</Folder>\r\n");
-
-		kmlOut.append("");
-		kmlOut.append("");
-		kmlOut.append("");
-		kmlOut.append("");
-
 	}
 
 	private void writeNodes() {
 		kmlOut.append("		<Folder><name>Vertexes</name>\r\n");
 		kmlOut.append("      <description>Draw the game graph Vertexes</description>\r\n");
 
-		for (node_data node : algo.getGraph().getV()) {
+		for (node_data node : graph.getV()) {
 			writeNode(node);
 		}
 
@@ -222,8 +200,6 @@ public class KML_Logger {
 		kmlOut.append("  </PolyStyle> \r\n");
 		kmlOut.append(" </Style>\r\n");	
 		kmlOut.append("</Placemark>\r\n");
-
-
 	}
 	
 	private void writeCoord(double x, double y){
@@ -237,8 +213,8 @@ public class KML_Logger {
 		kmlOut.append("		<Folder><name>Edges</name>\r\n");
 		kmlOut.append("      <description>Draw the game graph edges</description>\r\n");
 
-		for (int node : algo.getGraph().getVnums()) {
-			for (edge_data edge : algo.getGraph().getE(node)) {
+		for (int node : graph.getVnums()) {
+			for (edge_data edge : graph.getE(node)) {
 				writEdge(edge);
 			}
 		}
@@ -256,9 +232,9 @@ public class KML_Logger {
 		kmlOut.append("      <LineString>\r\n");
 		kmlOut.append("        <coordinates>\r\n");
 
-		kmlOut.append(algo.getGraph().getNode(edge.getSrc()).getLocation());
+		kmlOut.append(graph.getNode(edge.getSrc()).getLocation());
 		kmlOut.append("\r\n");
-		kmlOut.append(algo.getGraph().getNode(edge.getDest()).getLocation());
+		kmlOut.append(graph.getNode(edge.getDest()).getLocation());
 		kmlOut.append("\r\n");
 
 		kmlOut.append("        </coordinates>\r\n");
@@ -266,6 +242,10 @@ public class KML_Logger {
 		kmlOut.append("    </Placemark>\r\n");
 	}
 
+	/**
+	 * Join the 3 StringBuilders together and add the finish of the kml.
+	 * need to call it before save(). 
+	 */
 	public void closeKml() {
 		kmlRob.append("</Folder>\r\n");
 		kmlFru.append("</Folder>\r\n");
@@ -277,12 +257,18 @@ public class KML_Logger {
 		kmlOut.append("</kml>");
 	}
 
-	public String log() {
+	
+	private String log() {
 		return kmlOut.toString();
 	}
 
+	/**
+	 * save the kmlOut to a specific file.
+	 * need to call first to closeKml() 
+	 * 
+	 * @param file_name - the file path
+	 */
 	public void save(String file_name) {
-
 		try {
 			PrintWriter out = new PrintWriter(file_name);
 			out.print(log());
@@ -291,9 +277,11 @@ public class KML_Logger {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
-
 	}
 
+	/**
+	 * Write the current fruits and robots to the kml
+	 */
 	public void writeStatus() {
 		writeRobots();
 		writeFruits();

@@ -4,6 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import Server.game_service;
 
+/**
+ * This Class holding information about the game server.
+ * 
+ * @author Netanel Albert
+ */
 public class ServerInfo {
 	private int fruits;
 	private int moves;
@@ -12,12 +17,17 @@ public class ServerInfo {
 	private String graph;
 	private game_service gameServer;
 	
-	
+	/**
+	 * Set the field and update the information.
+	 * @throws JSONException - if the server JSON format isn't correct.
+	 */
 	public ServerInfo(game_service gameServer) throws JSONException {
 		this.gameServer = gameServer;
 		updateServer();
 	}
-	
+	/**
+	 * Update the information about the server from the server.toString()
+	 */
 	public void updateServer() throws JSONException {
 		JSONObject serverJSON = new JSONObject(gameServer.toString()).getJSONObject("GameServer");
 		setFruits(serverJSON.getInt("fruits"));

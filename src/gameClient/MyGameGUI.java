@@ -17,16 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,15 +40,18 @@ import grapgDataStructure.edge_data;
 import grapgDataStructure.node_data;
 import utils.Point3D;
 
+/**
+ * This class creating a window with the game.
+ * 
+ * All the functions of the GUI and the manual game mode are in this class.
+ * 
+ * @author Netanel Albert
+ */
 @SuppressWarnings("serial")
 public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
-	public static void main(String[] args) {
-		new MyGameGUI();
-	}
-	
 	
 	private game_service gameServer;
-	private Graph_Algo algo = new Graph_Algo();;
+	private Graph_Algo algo = new Graph_Algo();
 	private ServerInfo serverInfo;
 	private FruitsContainer fruits;
 	private RobotsContainer robots;
@@ -69,15 +69,21 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	private double minY = Double.MAX_VALUE;
 	private double maxY = Double.MIN_VALUE;
 
-	private double EPS;
+	private double EPS = 0.00001;
 	private boolean GAME_OVER;
 	private Image bananaIMG;
 	private Image appleIMG;
 	private Image robotIMG;
 	private int graphNum;
 	
+	private BufferedImage graphImage;
+	// TODO check if need to recreate when change window size
+	
 	KML_Logger logger;
 
+	/**
+	 * Empty constructor - initialize the GUI and show the window
+	 */
 	public MyGameGUI() {
 		setTitle("Maze of Waze - The Game");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -91,7 +97,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 		initGame();
 	}
-
+	
+	/**
+	 * Do all what needed to start a game.
+	 * Need to be called from the constructor and when needed to start a new game (user choose to).
+	 */
 	private void initGame() {
 		initGraph();
 		GAME_OVER = false;
@@ -106,14 +116,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		robots = new RobotsContainer(gameServer, serverInfo);
 		fruits = new FruitsContainer(gameServer, serverInfo);
 		repaint();
-		
-		////// kml
 
-		logger = new KML_Logger(algo, fruits, robots);
-		
-
-		////// kml
-		
+		logger = new KML_Logger(algo.getGraph(), fruits, robots);
+			
 		String[] modes = { "Manual", "Auto" };
 		int mode;
 		do {
@@ -131,7 +136,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	private void startAutoGame() {
 		manualGame = false;
-		AutoPlayer2 auto = new AutoPlayer2(gameServer, serverInfo, algo, fruits, robots, EPS);
+		AutoPlayer auto = new AutoPlayer(gameServer, serverInfo, algo, fruits, robots, EPS);
 		gameServer.startGame();
 		auto.start();
 	}
@@ -151,14 +156,16 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		gameServer.startGame();
 
 	}
-
+	
+	/**
+	 * Run loop in a new thread that reload the data from server and repaint.
+	 */
 	private void autoMoveGame() {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				long start = 0, end = 0, max = 0, count = 0, sum = 0, current;
-				while (gameServer.isRunning()) {
-					start = System.currentTimeMillis();
+				long prev = System.currentTimeMillis();
+				while (isRunning(gameServer)) {
 					gameServer.move();
 					try {
 						serverInfo.updateServer();
@@ -166,16 +173,13 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 						robots.updateRobots();
 						repaint();
 						
-						logger.writeStatus();
+						long now = System.currentTimeMillis();
+						if(now - prev > 150) {
+							logger.writeStatus();
+							prev = now;
+						}
 						
-						end = System.currentTimeMillis();
-						current = end - start;
-						// System.out.println(current);
-						if (current > max)
-							max = current;
-						count++;
-						sum += current;
-						Thread.sleep(500);
+						Thread.sleep(50);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -183,21 +187,40 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				GAME_OVER = true;
 				repaint();
 				logger.closeKml();
-				logger.save("gameGui.kml");
 				
-				System.out.println("max delay: " + max);
-				System.out.println("average: " + sum / count);
+				askAndSave();
 			}
+
 		};
 		new Thread(r).start();
 	}
 
+	private void askAndSave() {
+		if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
+				"Do you want to save the game log?")) {
+			
+			// Taken from https://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setCurrentDirectory(new File("kml"));
+			
+			int result = fileChooser.showOpenDialog(this);
+			if (result == JFileChooser.APPROVE_OPTION) {
+			    File selectedFile = fileChooser.getSelectedFile();
+			    String path = selectedFile.getAbsolutePath();
+			    if(!path.endsWith(".kml"))
+			    	path += ".kml";
+			    logger.save(path);	
+			}
+		}		
+	}
+	/**
+	 * Initialize graph from the server according to the user choice.
+	 */
 	private void initGraph() {
 		DGraph g = null;
 
 		while (g == null) {
-			String scenarioStr = JOptionPane
-					.showInputDialog("Welcome to my game \n" + "Pleas choose scenario (number between 0 to 23)", 0);
+			String scenarioStr = JOptionPane.showInputDialog("Welcome to my game \n" + "Pleas choose scenario (number between 0 to 23)", 0);
 			if (scenarioStr != null) {
 				scenarioStr = scenarioStr.replaceAll(" ", "");
 				try {
@@ -209,7 +232,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 					String graphStr = gameServer.getGraph();
 					g = new DGraph(new JSONObject(graphStr));
 				} catch (Exception e) {
-					System.out.println("MyGameGUI initGame() ERROR:");
 					e.printStackTrace();
 				}
 			}
@@ -222,6 +244,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		repaint();		
 	}
 
+	/**
+	 * Set the min & max x,y for later adjusting of the graph to the window
+	 */
 	private void refactorMinMaxXY() {
 		if (algo == null || algo.getGraph() == null)
 			return;
@@ -239,18 +264,22 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 			if (node.getLocation().y() > maxY)
 				maxY = node.getLocation().y();
 		}
-
-		EPS = (maxX - minX) / WIN_WIDTH;
-
 	}
 
+	/**
+	 * @param x the x coordinate to convert
+	 * @return the location on the screen that fit that x
+	 */
 	private int scaleX(double x) {
 		if (x > maxX || x < minX)
 			refactorMinMaxXY();
 
 		return (int) ((x - minX) / (maxX - minX) * (WIN_WIDTH - 50) + 25);
 	}
-
+	/**
+	 * @param y the y coordinate to convert
+	 * @return the location on the screen that fit that y
+	 */
 	private int scaleY(double y) {
 		if (y > maxY || y < minY)
 			refactorMinMaxXY();
@@ -258,8 +287,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		return WIN_HEIGHT - (int) ((y - minY) / (maxY - minY) * (WIN_HEIGHT - 100) + 30);
 	}
 
-	JMenuBar menuBar;
-
+	/**
+	 * Set the meneBar of this window
+	 */
 	private void setMenuBar() {
 		JMenu file;
 		file = new JMenu("File");
@@ -267,17 +297,15 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		JMenuItem newGraph = new JMenuItem("New");
 		newGraph.addActionListener(this);
 		newGraph.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, 
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(newGraph);
 
-		menuBar = new JMenuBar();
+		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(file);
 
 		setJMenuBar(menuBar);
 	}
-
-	private BufferedImage graphImage;
-	// TODO check if need to recreate when change window size
 
 	@Override
 	public void paint(Graphics g) {
@@ -299,13 +327,16 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		orgGraphic.drawImage(bufferedImage, null, 0, 0);
 	}
 
+	/**
+	 * Write the game status up in the screen
+	 */
 	private void drawStrings(Graphics g2d) {
 		g2d.setColor(Color.BLUE);
 		g2d.setFont(new Font("Courier", Font.PLAIN, 30));
 		if (serverInfo != null) {
 			String info = "";
 			info += "Points: " + serverInfo.getGrade();
-			if (gameServer.isRunning())
+			if (isRunning(gameServer))
 				info += " | Time: " + gameServer.timeToEnd() / 1000;
 
 			g2d.drawString(info, WIN_WIDTH / 4, 50);
@@ -323,6 +354,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+	/**
+	 * Draw the robots in their current place on the screen
+	 */
 	private void drawRobots(Graphics g) {
 		if (robots == null)
 			return;
@@ -343,6 +377,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Draw the fruits in their current place on the screen
+	 */
 	private void drawFruits(Graphics g) {
 		if (fruits == null)
 			return;
@@ -375,6 +412,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+	/**
+	 * Draw the graph vertexes and edges in their current place on the screen
+	 */
 	private void drawGraph(Graphics2D g2d) {
 		if (algo == null || algo.getGraph() == null)
 			return;
@@ -392,6 +432,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Draw a single edge
+	 */
 	private void drawEdge(Graphics g, edge_data e) {
 		node_data src = algo.getGraph().getNode(e.getSrc());
 		node_data dest = algo.getGraph().getNode(e.getDest());
@@ -428,6 +471,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+	/**
+	 * Load the image from files. If failed, create simple shape of them.
+	 */
 	private void setFruitsImages() {
 		try {
 			bananaIMG = ImageIO.read(new File("data/banana.png"));
@@ -539,22 +585,28 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// do nothing
+		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// do nothing
+		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// do nothing
+		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// do nothing
+		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
-
+	
+	/**
+	 * Need to use this when calling from multiple threads to avoid exceptions
+	 */
+	public static synchronized boolean isRunning(game_service gameServe) {
+		return gameServe.isRunning();
+	}
 }
