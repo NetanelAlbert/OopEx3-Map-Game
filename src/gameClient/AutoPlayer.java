@@ -63,6 +63,7 @@ public class AutoPlayer extends Thread {
 
 	/**
 	 * The actual play part, mainly update the data and choose where will the robots go.
+	 * Need to call by Start.
 	 */
 	@Override
 	public void run() {
