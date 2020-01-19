@@ -10,28 +10,35 @@ import java.util.List;
 import Server.game_service;
 import algorithms.Graph_Algo;
 import gameDataStructure.Fruit;
-import gameDataStructure.FruitUpdatingContainer;
+import gameDataStructure.FruitsContainer;
 import gameDataStructure.Robot;
-import gameDataStructure.RobotsUpdatingContainer;
+import gameDataStructure.RobotsContainer;
 import gameDataStructure.ServerInfo;
 import grapgDataStructure.edge_data;
 import grapgDataStructure.node_data;
 import utils.Point3D;
 
-public class AuotPlayer extends Thread {
+/*
+ * new strategy: for each robot keep 1 fruit as dest,
+ * and if foud fruit that its (value / time to reach) is greater so swetch dest.
+ * 
+ * optional: chack wich robot will get the moste of taking it.
+ */
+
+public class AutoPlayer extends Thread {
 	private final game_service gameServer;
 	private final ServerInfo serverInfo;
 	private final Graph_Algo algo;
-	private final FruitUpdatingContainer fruits;
-	private final RobotsUpdatingContainer robots;
+	private final FruitsContainer fruits;
+	private final RobotsContainer robots;
 	private final double EPS;
 	private double[][] dist;
 	private ArrayList<Point3D> handlingFruits = new ArrayList<Point3D>();
 	private HashMap<Integer, ArrayList<node_data>> robotsTargets = new HashMap<Integer, ArrayList<node_data>>();
 	private HashMap<Integer, Long> ETA = new HashMap<Integer, Long>(); // Estimated Time of Arrival (finish);
 
-	public AuotPlayer(game_service gameServer, ServerInfo serverInfo, Graph_Algo algo, FruitUpdatingContainer fruits,
-			RobotsUpdatingContainer robots, double EPS) {
+	public AutoPlayer(game_service gameServer, ServerInfo serverInfo, Graph_Algo algo, FruitsContainer fruits,
+			RobotsContainer robots, double EPS) {
 		this.gameServer = gameServer;
 		this.serverInfo = serverInfo;
 		this.algo = algo;
@@ -49,25 +56,20 @@ public class AuotPlayer extends Thread {
 			robotsTargets.put(rob.getId(), targs);
 			ETA.put(rob.getId(), 0L);
 		}
-		System.out.println(Arrays.toString(robots.getRobots()));
 
 	}
 
 	@Override
 	public void run() {
 		while (gameServer.isRunning()) {
-			int robotNum = robots.getStuckRobotID();
-			node_data robotVer = robots.getStackRobotVertex();
-			if (robotVer != null) {
-				int nextNode = nextNode(robotVer.getKey());
-				// gameServer.chooseNextEdge(robotNum, nextNode);
-				handleFruits();
-				moveRobots();
-				gameServer.move();
-				robots.resetStackRobot();
-			}
+
+			fruits.updateFruits();
+			handleFruits();
+			robots.updateRobots();
+			moveRobots();
+			//clearHandlingFruits();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -78,7 +80,7 @@ public class AuotPlayer extends Thread {
 		for (Robot rob : robots.getRobots()) {
 			if (rob.getDest() == -1)
 				moveRobot(rob);
-		}
+			}
 	}
 
 	private void moveRobot(Robot rob) {
@@ -86,19 +88,48 @@ public class AuotPlayer extends Thread {
 		if (targets.size() > 1) {
 			gameServer.chooseNextEdge(rob.getId(), targets.get(1).getKey());
 			edge_data prvEdge = algo.getGraph().getEdge(targets.get(0).getKey(), targets.get(1).getKey());
-			System.out.println(targets);
-			System.out.println("prvEdge: "+prvEdge);
+			
+
+			
 			long prvEdgeTime = (long) (prvEdge.getWeight() / rob.getSpeed());
 			ETA.put(rob.getId(), ETA.get(rob.getId()) - prvEdgeTime);
 			targets.remove(0);
-		}
+		} else 
+			ETA.put(rob.getId(), 0L);
 	}
 
 	private void handleFruits() {
 		for (Fruit fruit : fruits.getFruits()) {
 			if (!handlingFruits.contains(fruit.getPos()))
-				handleFruit(fruit);
+				if(isOnTheWay(fruit))
+					handlingFruits.add(0, fruit.getPos());
+				else
+					handleFruit(fruit);
+			
 		}
+	}
+	
+	
+
+	private boolean isOnTheWay(Fruit fruit) {
+		edge_data e = getEdgeByFruit(fruit);
+		for (int robID : robotsTargets.keySet()) {
+			if(isOnList(robotsTargets.get(robID), e))
+				return true;
+		}
+		return false;
+	}
+
+	private boolean isOnList(ArrayList<node_data> list, edge_data e) {
+		for (int i = 0; i < list.size()-1; i++) {
+			int src = list.get(i).getKey();
+			int dest = list.get(i+1).getKey();
+			if(src == e.getSrc() && dest == e.getDest()) {
+				System.out.println("isOnList: "+list);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void handleFruit(Fruit fruit) {
@@ -110,6 +141,7 @@ public class AuotPlayer extends Thread {
 		ArrayList<node_data> tmpTargs = null;
 		int lastNode = 0;
 		int handlerRobID = 0;
+		int DEBUFrobID = -1;
 		for (int robID : ETA.keySet()) {
 			long tmpETA = ETA.get(robID);
 			tmpTargs = robotsTargets.get(robID);
@@ -120,14 +152,28 @@ public class AuotPlayer extends Thread {
 				eta = tmpETA + addingTime;
 				targets = tmpTargs;
 				handlerRobID = robID;
+				DEBUFrobID = robID;
 			}
 		}
+		lastNode = targets.get(targets.size() - 1).getKey();
 		List<node_data> path = algo.shortestPath(lastNode, fruitSrcNode);
+		
+//		System.out.println(" - - - -");
+//		System.out.println("handleFruit: ");
+//		System.out.println("Rob id: "+DEBUFrobID);
+//		System.out.println("fruit edge: "+edge);
+//		System.out.println("path to fruit: "+path);
+//		System.out.println("rob old path: "+targets);
+//		System.out.println("rob old last: "+lastNode);
+		
+		
 		path.remove(0);
 		targets.addAll(path);
 		targets.add(algo.getGraph().getNode(edge.getDest()));
+		
 		ETA.put(handlerRobID, eta);
-		handlingFruits.add(fruit.getPos());
+		handlingFruits.add(0, fruit.getPos());
+		
 	}
 
 	private int nextNode(int src) {
@@ -143,6 +189,12 @@ public class AuotPlayer extends Thread {
 		}
 		ans = itr.next().getDest();
 		return ans;
+	}
+	
+	private void clearHandlingFruits() {
+		int maxCap = serverInfo.getFruits()+1;
+		while(handlingFruits.size() > maxCap)
+			handlingFruits.remove(maxCap);
 	}
 
 	private edge_data highestFruitEdge() {

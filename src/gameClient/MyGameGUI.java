@@ -34,9 +34,9 @@ import Server.Game_Server;
 import Server.game_service;
 import algorithms.Graph_Algo;
 import gameDataStructure.Fruit;
-import gameDataStructure.FruitUpdatingContainer;
+import gameDataStructure.FruitsContainer;
 import gameDataStructure.Robot;
-import gameDataStructure.RobotsUpdatingContainer;
+import gameDataStructure.RobotsContainer;
 import gameDataStructure.ServerInfo;
 import grapgDataStructure.DGraph;
 import grapgDataStructure.edge_data;
@@ -44,12 +44,17 @@ import grapgDataStructure.node_data;
 import utils.Point3D;
 
 @SuppressWarnings("serial")
-public class MyGameGUI extends JFrame implements ActionListener, MenuListener, MouseListener {
+public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
+	public static void main(String[] args) {
+		new MyGameGUI();
+	}
+	
+	
 	private game_service gameServer;
 	private Graph_Algo algo = new Graph_Algo();;
 	private ServerInfo serverInfo;
-	private FruitUpdatingContainer fruits;
-	private RobotsUpdatingContainer robots;
+	private FruitsContainer fruits;
+	private RobotsContainer robots;
 
 	private boolean manualGame = true;
 
@@ -66,10 +71,12 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 	private double EPS;
 	private boolean GAME_OVER;
-	private Image banana;
-	private Image apple;
-	private Image robot;
+	private Image bananaIMG;
+	private Image appleIMG;
+	private Image robotIMG;
 	private int graphNum;
+	
+	KML_Logger logger;
 
 	public MyGameGUI() {
 		setTitle("Maze of Waze - The Game");
@@ -95,15 +102,23 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 					JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
-		
-		robots = new RobotsUpdatingContainer(gameServer, serverInfo, algo, EPS);
-		fruits = new FruitUpdatingContainer(gameServer, serverInfo);
+
+		robots = new RobotsContainer(gameServer, serverInfo);
+		fruits = new FruitsContainer(gameServer, serverInfo);
 		repaint();
+		
+		////// kml
+
+		logger = new KML_Logger(algo, fruits, robots);
+		
+
+		////// kml
+		
 		String[] modes = { "Manual", "Auto" };
 		int mode;
 		do {
 			mode = JOptionPane.showOptionDialog(null, "Choose game mode", "Game mode", JOptionPane.DEFAULT_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, modes, modes[0]);
+					JOptionPane.QUESTION_MESSAGE, null, modes, modes[1]);
 		} while (mode == -1);
 
 		if (mode == 0)
@@ -112,14 +127,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 			startAutoGame();
 
 		autoMoveGame();
-		robots.start();
-		fruits.start();
-
 	}
 
 	private void startAutoGame() {
 		manualGame = false;
-		AuotPlayer auto = new AuotPlayer(gameServer, serverInfo, algo, fruits, robots, EPS);
+		AutoPlayer2 auto = new AutoPlayer2(gameServer, serverInfo, algo, fruits, robots, EPS);
 		gameServer.startGame();
 		auto.start();
 	}
@@ -144,7 +156,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				long start = 0, end = 0;
+				long start = 0, end = 0, max = 0, count = 0, sum = 0, current;
 				while (gameServer.isRunning()) {
 					start = System.currentTimeMillis();
 					gameServer.move();
@@ -153,15 +165,28 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 						fruits.updateFruits();
 						robots.updateRobots();
 						repaint();
+						
+						logger.writeStatus();
+						
 						end = System.currentTimeMillis();
-						// System.out.println(end-start);
-						Thread.sleep(100);
+						current = end - start;
+						// System.out.println(current);
+						if (current > max)
+							max = current;
+						count++;
+						sum += current;
+						Thread.sleep(500);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 				GAME_OVER = true;
 				repaint();
+				logger.closeKml();
+				logger.save("gameGui.kml");
+				
+				System.out.println("max delay: " + max);
+				System.out.println("average: " + sum / count);
 			}
 		};
 		new Thread(r).start();
@@ -179,7 +204,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 					graphNum = Integer.parseInt(scenarioStr);
 					if (graphNum < 0 || 23 < graphNum)
 						continue;
-					System.out.println(graphNum);
+
 					gameServer = Game_Server.getServer(graphNum); // you have [0,23] games
 					String graphStr = gameServer.getGraph();
 					g = new DGraph(new JSONObject(graphStr));
@@ -192,8 +217,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 		algo.init(g);
 		refactorMinMaxXY();
-		repaint();
-
+		
+		creatGraphIMG();
+		repaint();		
 	}
 
 	private void refactorMinMaxXY() {
@@ -232,10 +258,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 		return WIN_HEIGHT - (int) ((y - minY) / (maxY - minY) * (WIN_HEIGHT - 100) + 30);
 	}
 
+	JMenuBar menuBar;
+
 	private void setMenuBar() {
 		JMenu file;
 		file = new JMenu("File");
-		file.addMenuListener(this);
 
 		JMenuItem newGraph = new JMenuItem("New");
 		newGraph.addActionListener(this);
@@ -243,25 +270,25 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(newGraph);
 
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menuBar.add(file);
 
 		setJMenuBar(menuBar);
 	}
 
+	private BufferedImage graphImage;
+	// TODO check if need to recreate when change window size
+
 	@Override
 	public void paint(Graphics g) {
-		// Double buffering
+		if(graphImage == null)
+			return;
+		
 		BufferedImage bufferedImage = new BufferedImage(WIN_WIDTH, WIN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bufferedImage.createGraphics();
-
-		g2d.setBackground(Color.WHITE);
-		g2d.clearRect(0, 0, WIN_WIDTH, WIN_HEIGHT);
-
+		g2d.drawImage(graphImage, null, 0, 0);
 		g2d.setFont(new Font("Courier", Font.PLAIN, 20));
-
-		drawGraph(g2d);
-
+		
 		drawFruits(g2d);
 
 		drawRobots(g2d);
@@ -270,11 +297,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 		Graphics2D orgGraphic = (Graphics2D) g;
 		orgGraphic.drawImage(bufferedImage, null, 0, 0);
-
 	}
 
-	private void drawStrings(Graphics2D g2d) {
+	private void drawStrings(Graphics g2d) {
 		g2d.setColor(Color.BLUE);
+		g2d.setFont(new Font("Courier", Font.PLAIN, 30));
 		if (serverInfo != null) {
 			String info = "";
 			info += "Points: " + serverInfo.getGrade();
@@ -283,17 +310,15 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 			g2d.drawString(info, WIN_WIDTH / 4, 50);
 
-			
-			g2d.drawString(
-					"Level: " + graphNum + " | Fruits: " + serverInfo.getFruits() + " | Robots: " + serverInfo.getRobots(),
-					(WIN_WIDTH / 3) * 2, 50);
+			g2d.drawString("Level: " + graphNum + " | Fruits: " + serverInfo.getFruits() + " | Robots: "
+					+ serverInfo.getRobots(), (WIN_WIDTH / 3) * 2, 50);
 
-		}
-		if (GAME_OVER) {
-			g2d.setFont(new Font("Courier", Font.PLAIN, 50));
-			g2d.setColor(Color.RED);
-			if (serverInfo != null)
-				g2d.drawString("Game Over!", WIN_WIDTH / 2 - 150, 250);
+			if (GAME_OVER) {
+				g2d.setFont(new Font("Courier", Font.PLAIN, 50));
+				g2d.setColor(Color.RED);
+				if (serverInfo != null)
+					g2d.drawString("Game Over!", WIN_WIDTH / 2 - 150, 250);
+			}
 		}
 
 	}
@@ -302,22 +327,19 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 		if (robots == null)
 			return;
 
-		g.setColor(Color.green);
 		for (Robot robot : robots.getRobots()) {
 			if (robot != null) {
+				g.setColor(Color.green);
 				int x = scaleX(robot.getPos().x()) - IMAGE_SIZE / 2;
 				int y = scaleY(robot.getPos().y()) - IMAGE_SIZE / 2;
-				g.drawImage(this.robot, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
+				g.drawImage(this.robotIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
 				g.drawString("" + robot.getSpeed(), x, y);
-			}
-		}
 
-		node_data stuck = robots.getStackRobotVertex();
-		if (stuck != null) {
-			int x = scaleX(stuck.getLocation().x());
-			int y = scaleY(stuck.getLocation().y());
-			g.setColor(Color.DARK_GRAY);
-			g.drawOval(x - NODE_SIZE, y - NODE_SIZE, 2 * NODE_SIZE, 2 * NODE_SIZE);
+				if (robot.getDest() == -1) {
+					g.setColor(Color.DARK_GRAY);
+					g.drawOval(x - IMAGE_SIZE, y - IMAGE_SIZE, 3 * IMAGE_SIZE, 3 * IMAGE_SIZE);
+				}
+			}
 		}
 	}
 
@@ -325,22 +347,31 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 		if (fruits == null)
 			return;
 
-		try {
-			JSONArray fruits = new JSONArray(gameServer.getFruits());
+		g.setColor(Color.blue);
+		for (Fruit f : fruits.getFruits()) {
+			int x = scaleX(f.getPos().x()) - IMAGE_SIZE / 2;
+			int y = scaleY(f.getPos().y()) - IMAGE_SIZE / 2;
+			if (f.getType() < 0)
+				g.drawImage(bananaIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
+			else
+				g.drawImage(appleIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
 
-			for (int i = 0; i < fruits.length(); i++) {
-				Fruit f = new Fruit(new JSONObject(fruits.getString(i)).getJSONObject("Fruit"));
-				int x = scaleX(f.getPos().x()) - IMAGE_SIZE / 2;
-				int y = scaleY(f.getPos().y()) - IMAGE_SIZE / 2;
-				if (f.getType() < 0)
-					g.drawImage(banana, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-				else
-					g.drawImage(apple, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			g.drawString(f.getValue() + "", x, y);
 		}
+	}
+
+	private void creatGraphIMG() {
+		graphImage = new BufferedImage(WIN_WIDTH, WIN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+
+		// Double buffering
+		Graphics2D g2d = graphImage.createGraphics();
+
+		g2d.setBackground(Color.WHITE);
+		super.paint(g2d);
+
+		g2d.setFont(new Font("Courier", Font.PLAIN, 20));
+
+		drawGraph(g2d);
 
 	}
 
@@ -356,7 +387,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 			g2d.drawString("" + n.getKey(), x, y + 15);
 
 			for (edge_data e : algo.getGraph().getE(n.getKey())) {
-
 				drawEdge(g2d, e);
 			}
 		}
@@ -400,24 +430,24 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 	private void setFruitsImages() {
 		try {
-			banana = ImageIO.read(new File("data/banana.png"));
-			apple = ImageIO.read(new File("data/apple.png"));
-			robot = ImageIO.read(new File("data/robot.png"));
+			bananaIMG = ImageIO.read(new File("data/banana.png"));
+			appleIMG = ImageIO.read(new File("data/apple.png"));
+			robotIMG = ImageIO.read(new File("data/robot.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			banana = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-			Graphics2D g = ((BufferedImage) banana).createGraphics(); // not sure on this line, but this seems more
+			bananaIMG = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = ((BufferedImage) bananaIMG).createGraphics(); // not sure on this line, but this seems more
 																		// right
 			g.setColor(Color.YELLOW);
 			g.fillRect(0, 0, 30, 30);
 
-			apple = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-			g = ((BufferedImage) apple).createGraphics(); // not sure on this line, but this seems more right
+			appleIMG = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+			g = ((BufferedImage) appleIMG).createGraphics(); // not sure on this line, but this seems more right
 			g.setColor(Color.RED);
 			g.fillRect(0, 0, 30, 30);
 
-			robot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-			g = ((BufferedImage) robot).createGraphics(); // not sure on this line, but this seems more right
+			robotIMG = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+			g = ((BufferedImage) robotIMG).createGraphics(); // not sure on this line, but this seems more right
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, 30, 30);
 			g.setColor(Color.GREEN);
@@ -486,27 +516,25 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		node_data stuckRobotNode = robots.getStackRobotVertex();
 
-		if (!manualGame || stuckRobotNode == null)
+		if (!manualGame)
 			return;
 
 		node_data destNode = getNodeByLocation(arg0);
 		if (destNode == null)
 			return;
-		int stuckRobotNum = stuckRobotNode.getKey();
-		int newDest = destNode.getKey();
 
-		if (algo.getGraph().getEdge(stuckRobotNum, newDest) == null) {
-			JOptionPane.showMessageDialog(null, "Thw dest must be neighbor of the stuck Robot", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
+		for (Robot rob : robots.getRobots()) {
+			if (rob.getDest() != -1)
+				continue;
+
+			edge_data e = algo.getGraph().getEdge(rob.getSrc(), destNode.getKey());
+
+			if (e != null) {
+				gameServer.chooseNextEdge(rob.getId(), destNode.getKey());
+				return;
+			}
 		}
-
-		gameServer.chooseNextEdge(robots.getStuckRobotID(), newDest);
-		gameServer.move();
-		robots.resetStackRobot();
-
 	}
 
 	@Override
@@ -526,21 +554,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MenuListener, M
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// do nothing
-	}
-
-	@Override
-	public void menuSelected(MenuEvent e) {
-		// do nothing
-	}
-
-	@Override
-	public void menuDeselected(MenuEvent e) {
-		repaint(); // to reshow the graph where the menu hide it
-	}
-
-	@Override
-	public void menuCanceled(MenuEvent e) {
 		// do nothing
 	}
 

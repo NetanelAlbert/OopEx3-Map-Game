@@ -1,0 +1,2143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Maze of Waze</name>
+    <description>Presentation of "Maze of Waze" game created by Netanel Albert</description>
+    <Style id="edgesYellow">
+      <LineStyle>
+        <color>7f00ffff</color>
+        <width>5</width>
+      </LineStyle>
+    </Style>    <Style id="roboStyle">
+      <IconStyle>
+        <Icon>
+<href>				data/robot.png        </href>
+</Icon>
+      </IconStyle>
+    </Style>    <Style id="appleStyle">
+      <IconStyle>
+        <Icon>
+<href>				data/apple.png        </href>
+</Icon>
+      </IconStyle>
+    </Style>    <Style id="bananaStyle">
+      <IconStyle>
+        <Icon>
+<href>				data/banana.png        </href>
+</Icon>
+      </IconStyle>
+    </Style>	<Folder><name>Graph</name><open>1</open>
+ <description>The graph of this game</description>
+		<Folder><name>Edges</name>
+      <description>Draw the game graph edges</description>
+    <Placemark>
+      <name>E(0,1)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18753053591606,32.10378225882353,0.0
+35.18958953510896,32.10785303529412,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(0,10)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18753053591606,32.10378225882353,0.0
+35.18910131880549,32.103618700840336,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(1,0)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18958953510896,32.10785303529412,0.0
+35.18753053591606,32.10378225882353,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(1,2)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18958953510896,32.10785303529412,0.0
+35.19341035835351,32.10610841680672,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(2,1)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.19341035835351,32.10610841680672,0.0
+35.18958953510896,32.10785303529412,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(2,3)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.19341035835351,32.10610841680672,0.0
+35.197528356739305,32.1053088,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(3,2)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.197528356739305,32.1053088,0.0
+35.19341035835351,32.10610841680672,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(3,4)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.197528356739305,32.1053088,0.0
+35.2016888087167,32.10601755126051,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(4,3)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.2016888087167,32.10601755126051,0.0
+35.197528356739305,32.1053088,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(4,5)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.2016888087167,32.10601755126051,0.0
+35.20582803389831,32.10625380168067,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(5,4)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20582803389831,32.10625380168067,0.0
+35.2016888087167,32.10601755126051,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(5,6)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20582803389831,32.10625380168067,0.0
+35.20792948668281,32.10470908739496,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(6,5)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20792948668281,32.10470908739496,0.0
+35.20582803389831,32.10625380168067,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(6,7)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20792948668281,32.10470908739496,0.0
+35.20746249717514,32.10254648739496,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(7,6)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20746249717514,32.10254648739496,0.0
+35.20792948668281,32.10470908739496,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(7,8)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20746249717514,32.10254648739496,0.0
+35.20319591121872,32.1031462,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(8,7)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20319591121872,32.1031462,0.0
+35.20746249717514,32.10254648739496,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(8,9)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.20319591121872,32.1031462,0.0
+35.19597880064568,32.10154696638656,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(9,8)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.19597880064568,32.10154696638656,0.0
+35.20319591121872,32.1031462,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(9,10)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.19597880064568,32.10154696638656,0.0
+35.18910131880549,32.103618700840336,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(10,0)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18910131880549,32.103618700840336,0.0
+35.18753053591606,32.10378225882353,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>E(10,9)</name>
+      <styleUrl>#edgesYellow</styleUrl>
+      <LineString>
+        <coordinates>
+35.18910131880549,32.103618700840336,0.0
+35.19597880064568,32.10154696638656,0.0
+        </coordinates>
+      </LineString>
+    </Placemark>
+	</Folder>
+		<Folder><name>Vertexes</name>
+      <description>Draw the game graph Vertexes</description>
+<Placemark> 
+      <name>0</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.18733053591606,32.10358225882353
+35.18733053591606,32.10398225882353
+35.18773053591606,32.10398225882353
+35.18773053591606,32.10358225882353
+35.18733053591606,32.10358225882353
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>1</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.18938953510896,32.10765303529412
+35.18938953510896,32.10805303529412
+35.18978953510896,32.10805303529412
+35.18978953510896,32.10765303529412
+35.18938953510896,32.10765303529412
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>2</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.19321035835351,32.10590841680672
+35.19321035835351,32.10630841680672
+35.19361035835351,32.10630841680672
+35.19361035835351,32.10590841680672
+35.19321035835351,32.10590841680672
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>3</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.197328356739305,32.105108800000004
+35.197328356739305,32.1055088
+35.197728356739304,32.1055088
+35.197728356739304,32.105108800000004
+35.197328356739305,32.105108800000004
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>4</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.201488808716704,32.10581755126051
+35.201488808716704,32.10621755126051
+35.2018888087167,32.10621755126051
+35.2018888087167,32.10581755126051
+35.201488808716704,32.10581755126051
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>5</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.20562803389831,32.10605380168067
+35.20562803389831,32.10645380168067
+35.206028033898306,32.10645380168067
+35.206028033898306,32.10605380168067
+35.20562803389831,32.10605380168067
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>6</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.20772948668281,32.10450908739496
+35.20772948668281,32.10490908739496
+35.20812948668281,32.10490908739496
+35.20812948668281,32.10450908739496
+35.20772948668281,32.10450908739496
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>7</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.207262497175144,32.10234648739496
+35.207262497175144,32.10274648739496
+35.20766249717514,32.10274648739496
+35.20766249717514,32.10234648739496
+35.207262497175144,32.10234648739496
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>8</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.20299591121872,32.1029462
+35.20299591121872,32.1033462
+35.20339591121872,32.1033462
+35.20339591121872,32.1029462
+35.20299591121872,32.1029462
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>9</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.195778800645684,32.10134696638656
+35.195778800645684,32.10174696638656
+35.19617880064568,32.10174696638656
+35.19617880064568,32.10134696638656
+35.195778800645684,32.10134696638656
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+<Placemark> 
+      <name>10</name>
+ <Polygon> <outerBoundaryIs>  <LinearRing>  
+  <coordinates>
+35.18890131880549,32.103418700840336
+35.18890131880549,32.103818700840336
+35.18930131880549,32.103818700840336
+35.18930131880549,32.103418700840336
+35.18890131880549,32.103418700840336
+  </coordinates>
+ </LinearRing> </outerBoundaryIs> </Polygon>
+ <Style> 
+  <PolyStyle>  
+   <color>#ff000000</color>
+   <outline>1</outline>
+  </PolyStyle> 
+ </Style>
+</Placemark>
+	</Folder>
+</Folder>
+<Folder><name>Robots</name>
+<description>The location of the robots during the game with timeStamp</description>
+<Placemark>
+<TimeSpan>
+<begin>0</begin>
+<end>1</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19752460631772,32.10530952824219,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>1</begin>
+<end>2</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19563439383983,32.10567656230194,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>2</begin>
+<end>3</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.193755432626695,32.10604141163514,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>3</begin>
+<end>4</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19341035835351,32.10610841680672,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>4</begin>
+<end>5</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.195120872278736,32.1057762759085,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>5</begin>
+<end>6</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19692141325265,32.10542665391037,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>6</begin>
+<end>7</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.197528356739305,32.1053088,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>7</begin>
+<end>8</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19885780876703,32.10553527798979,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>8</begin>
+<end>9</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.200315260552344,32.10578356130025,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>9</begin>
+<end>10</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.2016888087167,32.10601755126051,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>10</begin>
+<end>11</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20032897102355,32.10578589693921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>11</begin>
+<end>12</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19881555823158,32.10552808042557,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>12</begin>
+<end>13</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.197528356739305,32.1053088,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>13</begin>
+<end>14</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.195908174615404,32.10562340062265,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>14</begin>
+<end>15</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19402921340227,32.10598824995585,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>15</begin>
+<end>16</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19341035835351,32.10610841680672,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>16</begin>
+<end>17</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19238588516754,32.10657619946655,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>17</begin>
+<end>18</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19127010024107,32.107085675798245,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>18</begin>
+<end>19</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19015654243023,32.10759413521111,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>19</begin>
+<end>20</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>20</begin>
+<end>21</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.189059648082605,32.10680541388349,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>21</begin>
+<end>22</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18753053591606,32.10378225882353,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>22</begin>
+<end>23</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18854260865312,32.10367687661137,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>23</begin>
+<end>24</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18910131880549,32.103618700840336,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>24</begin>
+<end>25</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.194887708733646,32.10187564085767,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>25</begin>
+<end>26</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19597880064568,32.10154696638656,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>26</begin>
+<end>27</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20082140740026,32.10262003564609,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>27</begin>
+<end>28</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20319591121872,32.1031462,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>28</begin>
+<end>29</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20563915458866,32.102802776977214,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>29</begin>
+<end>30</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20746249717514,32.10254648739496,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>30</begin>
+<end>31</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.207877332558986,32.104467564820425,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>31</begin>
+<end>32</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20792948668281,32.10470908739496,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>32</begin>
+<end>33</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20672737295659,32.10559272478126,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>33</begin>
+<end>34</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.20582803389831,32.10625380168067,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>34</begin>
+<end>35</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.203218100579186,32.106104837124214,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>35</begin>
+<end>36</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.2016888087167,32.10601755126051,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>36</begin>
+<end>37</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19894121058516,32.105549485855676,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>37</begin>
+<end>38</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.197528356739305,32.1053088,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>38</begin>
+<end>39</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19393545286269,32.106006456010405,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>39</begin>
+<end>40</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.19341035835351,32.10610841680672,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>40</begin>
+<end>41</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>41</begin>
+<end>42</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18753053591606,32.10378225882353,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>42</begin>
+<end>43</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>43</begin>
+<end>44</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>44</begin>
+<end>45</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>45</begin>
+<end>46</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>46</begin>
+<end>47</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>47</begin>
+<end>48</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>48</begin>
+<end>49</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>49</begin>
+<end>50</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>50</begin>
+<end>51</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>51</begin>
+<end>52</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>52</begin>
+<end>53</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>53</begin>
+<end>54</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>54</begin>
+<end>55</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>55</begin>
+<end>56</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>56</begin>
+<end>57</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>57</begin>
+<end>58</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>58</begin>
+<end>59</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>59</begin>
+<end>60</end>
+</TimeSpan>
+<styleUrl>#roboStyle</styleUrl><Point><coordinates>35.18958953510896,32.10785303529412,0.0</coordinates></Point>
+</Placemark>
+</Folder>
+<Folder><name>Fruits</name>
+<description>The location of the Fruits during the game with timeStamp</description>
+<Placemark>
+<TimeSpan>
+<begin>0</begin>
+<end>1</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>0</begin>
+<end>1</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>0</begin>
+<end>1</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.195224052340706,32.10575624080796,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>1</begin>
+<end>2</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>1</begin>
+<end>2</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>1</begin>
+<end>2</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19494883961552,32.105809680537625,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>2</begin>
+<end>3</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>2</begin>
+<end>3</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>2</begin>
+<end>3</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>3</begin>
+<end>4</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>3</begin>
+<end>4</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>3</begin>
+<end>4</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>4</begin>
+<end>5</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>4</begin>
+<end>5</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>4</begin>
+<end>5</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>5</begin>
+<end>6</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>5</begin>
+<end>6</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>5</begin>
+<end>6</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>6</begin>
+<end>7</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>6</begin>
+<end>7</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>6</begin>
+<end>7</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>7</begin>
+<end>8</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>7</begin>
+<end>8</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>7</begin>
+<end>8</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>8</begin>
+<end>9</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>8</begin>
+<end>9</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>8</begin>
+<end>9</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>9</begin>
+<end>10</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>9</begin>
+<end>10</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.199963710098416,32.105723673136964,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>9</begin>
+<end>10</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>10</begin>
+<end>11</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>10</begin>
+<end>11</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>10</begin>
+<end>11</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.1992728373109,32.105605979924384,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>11</begin>
+<end>12</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>11</begin>
+<end>12</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>11</begin>
+<end>12</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>12</begin>
+<end>13</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>12</begin>
+<end>13</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>12</begin>
+<end>13</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>13</begin>
+<end>14</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>13</begin>
+<end>14</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>13</begin>
+<end>14</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>14</begin>
+<end>15</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>14</begin>
+<end>15</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>14</begin>
+<end>15</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>15</begin>
+<end>16</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>15</begin>
+<end>16</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>15</begin>
+<end>16</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>16</begin>
+<end>17</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>16</begin>
+<end>17</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19038634163924,32.10748920705224,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>16</begin>
+<end>17</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>17</begin>
+<end>18</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>17</begin>
+<end>18</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>17</begin>
+<end>18</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18887602099216,32.106442371080114,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>18</begin>
+<end>19</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>18</begin>
+<end>19</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>18</begin>
+<end>19</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18887602099216,32.106442371080114,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>19</begin>
+<end>20</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>19</begin>
+<end>20</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18893516072167,32.10655929420479,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>19</begin>
+<end>20</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.18887602099216,32.106442371080114,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>20</begin>
+<end>21</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>20</begin>
+<end>21</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>20</begin>
+<end>21</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>21</begin>
+<end>22</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>21</begin>
+<end>22</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>21</begin>
+<end>22</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>22</begin>
+<end>23</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>22</begin>
+<end>23</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>22</begin>
+<end>23</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>23</begin>
+<end>24</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>23</begin>
+<end>24</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>23</begin>
+<end>24</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>24</begin>
+<end>25</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>24</begin>
+<end>25</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>24</begin>
+<end>25</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>25</begin>
+<end>26</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>25</begin>
+<end>26</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>25</begin>
+<end>26</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>26</begin>
+<end>27</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>26</begin>
+<end>27</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>26</begin>
+<end>27</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>27</begin>
+<end>28</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>27</begin>
+<end>28</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.20539663533063,32.10283686555705,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>27</begin>
+<end>28</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>28</begin>
+<end>29</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>28</begin>
+<end>29</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>28</begin>
+<end>29</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>29</begin>
+<end>30</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>29</begin>
+<end>30</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>29</begin>
+<end>30</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>30</begin>
+<end>31</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>30</begin>
+<end>31</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>30</begin>
+<end>31</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>31</begin>
+<end>32</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>31</begin>
+<end>32</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>31</begin>
+<end>32</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>32</begin>
+<end>33</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>32</begin>
+<end>33</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>32</begin>
+<end>33</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>33</begin>
+<end>34</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>33</begin>
+<end>34</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>33</begin>
+<end>34</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>34</begin>
+<end>35</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>34</begin>
+<end>35</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>34</begin>
+<end>35</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>35</begin>
+<end>36</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>35</begin>
+<end>36</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19974476565152,32.105686374989176,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>35</begin>
+<end>36</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>36</begin>
+<end>37</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>36</begin>
+<end>37</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>36</begin>
+<end>37</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19565793847981,32.10567199049591,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>37</begin>
+<end>38</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>37</begin>
+<end>38</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>37</begin>
+<end>38</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.19565793847981,32.10567199049591,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>38</begin>
+<end>39</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>38</begin>
+<end>39</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>38</begin>
+<end>39</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>39</begin>
+<end>40</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>39</begin>
+<end>40</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>39</begin>
+<end>40</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>40</begin>
+<end>41</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>40</begin>
+<end>41</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>40</begin>
+<end>41</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>41</begin>
+<end>42</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>41</begin>
+<end>42</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>41</begin>
+<end>42</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>42</begin>
+<end>43</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>42</begin>
+<end>43</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>42</begin>
+<end>43</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>43</begin>
+<end>44</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>43</begin>
+<end>44</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>43</begin>
+<end>44</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>44</begin>
+<end>45</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>44</begin>
+<end>45</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>44</begin>
+<end>45</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>45</begin>
+<end>46</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>45</begin>
+<end>46</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>45</begin>
+<end>46</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>46</begin>
+<end>47</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>46</begin>
+<end>47</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>46</begin>
+<end>47</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>47</begin>
+<end>48</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>47</begin>
+<end>48</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>47</begin>
+<end>48</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>48</begin>
+<end>49</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>48</begin>
+<end>49</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>48</begin>
+<end>49</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>49</begin>
+<end>50</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>49</begin>
+<end>50</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>49</begin>
+<end>50</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>50</begin>
+<end>51</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>50</begin>
+<end>51</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>50</begin>
+<end>51</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>51</begin>
+<end>52</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>51</begin>
+<end>52</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>51</begin>
+<end>52</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>52</begin>
+<end>53</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>52</begin>
+<end>53</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>52</begin>
+<end>53</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>53</begin>
+<end>54</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>53</begin>
+<end>54</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>53</begin>
+<end>54</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>54</begin>
+<end>55</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>54</begin>
+<end>55</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>54</begin>
+<end>55</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>55</begin>
+<end>56</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>55</begin>
+<end>56</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>55</begin>
+<end>56</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>56</begin>
+<end>57</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>56</begin>
+<end>57</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>56</begin>
+<end>57</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>57</begin>
+<end>58</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>57</begin>
+<end>58</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>57</begin>
+<end>58</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>58</begin>
+<end>59</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>58</begin>
+<end>59</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>58</begin>
+<end>59</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>59</begin>
+<end>60</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.197656770719604,32.10191878639921,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>59</begin>
+<end>60</end>
+</TimeSpan>
+<styleUrl>#appleStyle</styleUrl><Point><coordinates>35.188500771222955,32.10570047767076,0.0</coordinates></Point>
+</Placemark>
+<Placemark>
+<TimeSpan>
+<begin>59</begin>
+<end>60</end>
+</TimeSpan>
+<styleUrl>#bananaStyle</styleUrl><Point><coordinates>35.188827745913414,32.10634692808267,0.0</coordinates></Point>
+</Placemark>
+</Folder>
+  </Document>
+</kml>

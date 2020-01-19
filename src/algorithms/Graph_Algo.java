@@ -202,7 +202,7 @@ public class Graph_Algo implements graph_algorithms {
 			if (current.getWeight() == Double.MAX_VALUE || current.getKey() == dest)
 				return current.getWeight();
 
-			// change all current unvisited neighbours weight if found shorter path
+			// change all current unvisited neighbors weight if found shorter path
 			for (edge_data e : ((DNode) current).values()) {
 
 				node_data neighbour = myGraph.getNode(e.getDest());

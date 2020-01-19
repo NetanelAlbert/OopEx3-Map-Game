@@ -13,14 +13,20 @@ public class Robot {
 	private double speed;
 	private Point3D pos;
 	
-	
+	boolean firstUpdate = true;
 	
 	public Robot(JSONObject robot) throws JSONException {
 		updateRobot(robot);
+		firstUpdate = false;
 	}
 	
 	public void updateRobot(JSONObject robot) throws JSONException {
-		this.id = robot.getInt("id");
+		int id = robot.getInt("id");
+		if(firstUpdate)
+			this.id = id;
+		else if(this.id != id)
+			throw new RuntimeException("id of robot shouldn't change");
+		
 		this.value = robot.getDouble("value");
 		this.src = robot.getInt("src");
 		this.dest = robot.getInt("dest");

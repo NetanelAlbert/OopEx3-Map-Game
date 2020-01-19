@@ -5,33 +5,21 @@ import org.json.JSONObject;
 
 import Server.game_service;
 
-public class FruitUpdatingContainer extends Thread{
+public class FruitsContainer {
 	private final game_service gameServer;
 	private final ServerInfo serverInfo;
 	private Fruit[] fruits;
 	
 	
-	public FruitUpdatingContainer(game_service gameServer, ServerInfo serverInfo) {
+	public FruitsContainer(game_service gameServer, ServerInfo serverInfo) {
 		this.gameServer = gameServer;
 		this.serverInfo = serverInfo;
 		updateFruits();
 	}
 	
-	@Override
-	public void run() {
-		while (gameServer.isRunning()) {
-			updateFruits();	
-			try {
-				Thread.sleep(40);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
+	
 	public void updateFruits() {
 		if (gameServer == null || serverInfo == null) {
-			// TODO how to continue if null
 			return;
 		}
 		if (fruits == null || fruits.length != serverInfo.getFruits())
@@ -45,7 +33,7 @@ public class FruitUpdatingContainer extends Thread{
 				if(fruits[i] == null)
 					fruits[i] = new Fruit(fruitsJSON);
 				else
-					fruits[i].updateFruits(fruitsJSON);
+					fruits[i].updateFruit(fruitsJSON);
 			}	
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("FruistUpdate ERROR: \n"+
@@ -57,6 +45,7 @@ public class FruitUpdatingContainer extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//System.out.println("finish updateFruits");
 	}
 	
 	public synchronized Fruit[] getFruits() {

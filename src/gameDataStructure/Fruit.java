@@ -9,11 +9,13 @@ public class Fruit implements Comparable<Fruit>{
 	private double value;
 	private int type;
 	private Point3D pos;
+	
+	
 	public Fruit(JSONObject fruit) throws JSONException {
-		updateFruits(fruit);
+		updateFruit(fruit);
 	}
 	
-	public void updateFruits(JSONObject fruit) throws JSONException {
+	public void updateFruit(JSONObject fruit) throws JSONException {
 		this.value = fruit.getInt("value");
 		this.type = fruit.getInt("type");
 		String[] coords = fruit.getString("pos").split(",");
@@ -40,7 +42,8 @@ public class Fruit implements Comparable<Fruit>{
 	
 	@Override
 	public String toString() {
-		return ""+value;
+		return ""+pos;
 	}
+
 	
 }

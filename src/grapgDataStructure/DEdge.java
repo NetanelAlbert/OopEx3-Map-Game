@@ -115,7 +115,8 @@ public class DEdge implements edge_data{
 	
 	@Override
 	public String toString() {
-		return src + ", " + dest + ", " + weight + ", " + info + ", " + tag;
+		return "E("+src+","+dest+")";
+		//return src + ", " + dest + ", " + weight + ", " + info + ", " + tag;
 	}
 	
 	@Override
