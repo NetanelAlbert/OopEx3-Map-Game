@@ -258,7 +258,7 @@ public class KML_Logger {
 	}
 
 	
-	private String log() {
+	public String log() {
 		return kmlOut.toString();
 	}
 

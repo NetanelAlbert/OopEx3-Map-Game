@@ -30,6 +30,9 @@ import org.json.JSONObject;
 import Server.Game_Server;
 import Server.game_service;
 import algorithms.Graph_Algo;
+import dataBase.DBHelper;
+import dataBase.Log;
+import dataBase.MyGamesData;
 import gameDataStructure.Fruit;
 import gameDataStructure.FruitsContainer;
 import gameDataStructure.Robot;
@@ -49,7 +52,7 @@ import utils.Point3D;
  */
 @SuppressWarnings("serial")
 public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
-	
+
 	private game_service gameServer;
 	private Graph_Algo algo = new Graph_Algo();
 	private ServerInfo serverInfo;
@@ -58,8 +61,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	private boolean manualGame = true;
 
-	private final int WIN_WIDTH = 1200;
-	private final int WIN_HEIGHT = 700;
 	private final int NODE_SIZE = 10; // need to be even
 	private final int ARROW_SIZE = NODE_SIZE - 2;
 	private final int IMAGE_SIZE = 20; // need to be even
@@ -75,10 +76,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	private Image appleIMG;
 	private Image robotIMG;
 	private int graphNum;
-	
+	private boolean loggedIn = false;
+
 	private BufferedImage graphImage;
 	// TODO check if need to recreate when change window size
-	
+
 	KML_Logger logger;
 
 	/**
@@ -88,19 +90,77 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		setTitle("Maze of Waze - The Game");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
-		setSize(WIN_WIDTH, WIN_HEIGHT);
+		setSize(1200, 700);
+
 		setMenuBar();
 		addMouseListener(this);
 		setFruitsImages();
 
 		setVisible(true);
 
+		login();
 		initGame();
 	}
+
+	private void login() {
+
+		String idStr = JOptionPane.showInputDialog("Welcome to my game \n" + "Pleas please insert your ID", 0);
+		int id = 0;
+		if (idStr != null) {
+			try {
+				id = Integer.valueOf(idStr);
+				loggedIn = Game_Server.login(id);
+				System.out.println("in: " + loggedIn);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error", "You have to type an integer Number",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (loggedIn)
+				JOptionPane.showMessageDialog(null, "Connect", "You are connecting as " + id,
+						JOptionPane.PLAIN_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, "Error", "Connectiom error, pleas try again.",
+						JOptionPane.ERROR_MESSAGE);
+
+		}
+		
+		//if(loggedIn)
+			//showStatistics(id);
+			
+
+	}
 	
+	private void showStatistics(int userID) {
+		MyGamesData gameData = DBHelper.myInfo(userID);
+		StringBuilder sb = new StringBuilder("Statistics for id "+userID +"\n");
+		sb.append("Your level is: ");
+		sb.append(gameData.getCurrentLevel());
+		sb.append(". You played ");
+		sb.append(gameData.getPlayedGames());
+		sb.append(" games. \n\n");
+
+		
+		sb.append("Your best scores: \n");
+		for (Log log : gameData.getTopScors().values()) {
+			sb.append(log);
+			sb.append("\n");
+		}
+		
+		sb.append("\nYour place in levels you reeched: \n");
+		for (Log log : gameData.getTopScors().values()) {
+			sb.append("Level ");
+			sb.append(log.getLevelId());
+			sb.append(": ");
+			sb.append(DBHelper.placeInLevel(log.getLevelId(), log.getScore()));
+			sb.append("\n");
+		}
+		
+		JOptionPane.showMessageDialog(null, sb, "Statistics", JOptionPane.PLAIN_MESSAGE);
+	}
+
 	/**
-	 * Do all what needed to start a game.
-	 * Need to be called from the constructor and when needed to start a new game (user choose to).
+	 * Do all what needed to start a game. Need to be called from the constructor
+	 * and when needed to start a new game (user choose to).
 	 */
 	private void initGame() {
 		initGraph();
@@ -118,7 +178,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		repaint();
 
 		logger = new KML_Logger(algo.getGraph(), fruits, robots);
-			
+
 		String[] modes = { "Manual", "Auto" };
 		int mode;
 		do {
@@ -136,7 +196,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	private void startAutoGame() {
 		manualGame = false;
-		AutoPlayer auto = new AutoPlayer(gameServer, serverInfo, algo, fruits, robots, EPS);
+		AutoPlayer2 auto = new AutoPlayer2(gameServer, serverInfo, algo, fruits, robots, EPS);
 		gameServer.startGame();
 		auto.start();
 	}
@@ -156,7 +216,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		gameServer.startGame();
 
 	}
-	
+
 	/**
 	 * Run loop in a new thread that reload the data from server and repaint.
 	 */
@@ -172,14 +232,14 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 						fruits.updateFruits();
 						robots.updateRobots();
 						repaint();
-						
+
 						long now = System.currentTimeMillis();
-						if(now - prev > 150) {
+						if (now - prev > 150) {
 							logger.writeStatus();
 							prev = now;
 						}
-						
-						Thread.sleep(50);
+
+						Thread.sleep(150);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -187,7 +247,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				GAME_OVER = true;
 				repaint();
 				logger.closeKml();
-				
+
 				askAndSave();
 			}
 
@@ -196,23 +256,29 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void askAndSave() {
-		if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-				"Do you want to save the game log?")) {
-			
-			// Taken from https://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Do you want to save the game log locally?")) {
+
+			// Taken from
+			// https://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setCurrentDirectory(new File("kml"));
-			
+
 			int result = fileChooser.showOpenDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION) {
-			    File selectedFile = fileChooser.getSelectedFile();
-			    String path = selectedFile.getAbsolutePath();
-			    if(!path.endsWith(".kml"))
-			    	path += ".kml";
-			    logger.save(path);	
+				File selectedFile = fileChooser.getSelectedFile();
+				String path = selectedFile.getAbsolutePath();
+				if (!path.endsWith(".kml"))
+					path += ".kml";
+				logger.save(path);
 			}
-		}		
+		}
+		
+		if(loggedIn && serverInfo.getMoves() <= DBHelper.maxMovesAllaowd(graphNum) && serverInfo.getGrade() >= DBHelper.minGradeNeed(graphNum)) {
+			if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "You past this level. \nDo you want to send the game log to server?"))
+				gameServer.sendKML(logger.log());
+		}
 	}
+
 	/**
 	 * Initialize graph from the server according to the user choice.
 	 */
@@ -220,7 +286,8 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		DGraph g = null;
 
 		while (g == null) {
-			String scenarioStr = JOptionPane.showInputDialog("Welcome to my game \n" + "Pleas choose scenario (number between 0 to 23)", 0);
+			String scenarioStr = JOptionPane
+					.showInputDialog("Welcome to my game \n" + "Pleas choose scenario (number between 0 to 23)", 0);
 			if (scenarioStr != null) {
 				scenarioStr = scenarioStr.replaceAll(" ", "");
 				try {
@@ -239,9 +306,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 		algo.init(g);
 		refactorMinMaxXY();
-		
+
 		creatGraphIMG();
-		repaint();		
+		repaint();
 	}
 
 	/**
@@ -274,8 +341,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		if (x > maxX || x < minX)
 			refactorMinMaxXY();
 
-		return (int) ((x - minX) / (maxX - minX) * (WIN_WIDTH - 50) + 25);
+		return (int) ((x - minX) / (maxX - minX) * (getWidth() - 50) + 25);
 	}
+
 	/**
 	 * @param y the y coordinate to convert
 	 * @return the location on the screen that fit that y
@@ -284,7 +352,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		if (y > maxY || y < minY)
 			refactorMinMaxXY();
 
-		return WIN_HEIGHT - (int) ((y - minY) / (maxY - minY) * (WIN_HEIGHT - 100) + 30);
+		return getHeight() - (int) ((y - minY) / (maxY - minY) * (getHeight() - 100) + 30);
 	}
 
 	/**
@@ -297,8 +365,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		JMenuItem newGraph = new JMenuItem("New");
 		newGraph.addActionListener(this);
 		newGraph.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, 
-						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(newGraph);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -309,14 +376,14 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void paint(Graphics g) {
-		if(graphImage == null)
+		if (graphImage == null)
 			return;
-		
-		BufferedImage bufferedImage = new BufferedImage(WIN_WIDTH, WIN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bufferedImage.createGraphics();
 		g2d.drawImage(graphImage, null, 0, 0);
 		g2d.setFont(new Font("Courier", Font.PLAIN, 20));
-		
+
 		drawFruits(g2d);
 
 		drawRobots(g2d);
@@ -325,6 +392,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 		Graphics2D orgGraphic = (Graphics2D) g;
 		orgGraphic.drawImage(bufferedImage, null, 0, 0);
+		
+		//getJMenuBar().updateUI();
+		// TODO fix menu hiding
 	}
 
 	/**
@@ -332,23 +402,23 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	private void drawStrings(Graphics g2d) {
 		g2d.setColor(Color.BLUE);
-		g2d.setFont(new Font("Courier", Font.PLAIN, 30));
+		g2d.setFont(new Font("Courier", Font.PLAIN, getWidth() / 40));
 		if (serverInfo != null) {
 			String info = "";
 			info += "Points: " + serverInfo.getGrade();
 			if (isRunning(gameServer))
 				info += " | Time: " + gameServer.timeToEnd() / 1000;
 
-			g2d.drawString(info, WIN_WIDTH / 4, 50);
+			g2d.drawString(info, getWidth() / 4, 80);
 
 			g2d.drawString("Level: " + graphNum + " | Fruits: " + serverInfo.getFruits() + " | Robots: "
-					+ serverInfo.getRobots(), (WIN_WIDTH / 3) * 2, 50);
+					+ serverInfo.getRobots(), (getWidth() / 3) * 2, 80);
 
 			if (GAME_OVER) {
 				g2d.setFont(new Font("Courier", Font.PLAIN, 50));
 				g2d.setColor(Color.RED);
 				if (serverInfo != null)
-					g2d.drawString("Game Over!", WIN_WIDTH / 2 - 150, 250);
+					g2d.drawString("Game Over!", getWidth() / 2 - 150, 250);
 			}
 		}
 
@@ -398,7 +468,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void creatGraphIMG() {
-		graphImage = new BufferedImage(WIN_WIDTH, WIN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		graphImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		// Double buffering
 		Graphics2D g2d = graphImage.createGraphics();
@@ -483,7 +553,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 			e.printStackTrace();
 			bananaIMG = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = ((BufferedImage) bananaIMG).createGraphics(); // not sure on this line, but this seems more
-																		// right
+																			// right
 			g.setColor(Color.YELLOW);
 			g.fillRect(0, 0, 30, 30);
 
@@ -561,6 +631,12 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	@Override
+	public void validate() {
+		super.validate();
+		creatGraphIMG();
+	}
+
+	@Override
 	public void mouseClicked(MouseEvent arg0) {
 
 		if (!manualGame)
@@ -602,7 +678,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	public void mouseExited(MouseEvent arg0) {
 		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
-	
+
 	/**
 	 * Need to use this when calling from multiple threads to avoid exceptions
 	 */
