@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,9 @@ import grapgDataStructure.DGraph;
 
 class kmlTest {
 
+	/**
+	 * a simple kml saving of a very short game.
+	 */
 	@Test
 	void kmlWriteTest() {
 		game_service gameServer = Game_Server.getServer(0);
@@ -44,7 +49,12 @@ class kmlTest {
 		kml.writeStatus();
 		gameServer.stopGame();
 		kml.closeKml();
-		kml.save("test.kml");	
+		
+		File kmlFolder = new File("kml");
+		if(!kmlFolder.exists())
+			kmlFolder.mkdir();
+		
+		kml.save("kml/test.kml");	
 	}
 
 }

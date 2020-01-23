@@ -51,13 +51,13 @@ public class KML_Logger {
 	}
 	
 	private void writeRobots() {
-		for (Robot rob : robots.getRobots()) {
+		for (Robot rob : robots) {
 			writeRobot(rob);
 		}
 	}
 	
 	private void writeFruits() {
-		for (Fruit fru : fruits.getFruits()) {
+		for (Fruit fru : fruits) {
 			writeFruit(fru);
 		}
 	}
@@ -257,7 +257,10 @@ public class KML_Logger {
 		kmlOut.append("</kml>");
 	}
 
-	
+	/**
+	 * 
+	 * @return the game log in string. It should be called after closeKml()
+	 */
 	public String log() {
 		return kmlOut.toString();
 	}

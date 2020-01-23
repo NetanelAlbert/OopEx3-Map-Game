@@ -6,13 +6,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
-
+/**
+ * This class propose is to get information from server Database.
+ * 
+ * @author Netanel Albert
+ */
 public class DBHelper {
 	public static final String jdbcUrl = "jdbc:mysql://db-mysql-ams3-67328-do-user-4468260-0.db.ondigitalocean.com:25060/oop?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
 	public static final String jdbcUser = "student";
 	public static final String jdbcUserPassword = "OOP2020student";
 
-	public static MyGamesData myInfo(int userId) {
+	/**
+	 * 
+	 * @param userId - id for the data filter
+	 * @return - MyGamesData object with all the data about the user (from server)
+	 */
+	public static MyGamesData userInfo(int userId) {
 		MyGamesData data = new MyGamesData();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -22,7 +31,7 @@ public class DBHelper {
 			ResultSet resultSet = statement.executeQuery(allCustomersQuery);
 
 			while (resultSet.next()) {
-				Log log = new Log(resultSet.getInt("UserID"), resultSet.getInt("levelID"), resultSet.getInt("moves"),
+				LogDao log = new LogDao(resultSet.getInt("UserID"), resultSet.getInt("levelID"), resultSet.getInt("moves"),
 						resultSet.getDate("time"), resultSet.getInt("score"));
 				
 				if(DBHelper.maxMovesAllaowd(log.getLevelId()) == -1)
@@ -49,7 +58,12 @@ public class DBHelper {
 		}
 	}
 
-	
+	/**
+	 * 
+	 * @param levelID - the required level.
+	 * @param myScore - user best score of this level
+	 * @return the number of users that have better scores in this level + 1 (cause if no one is better then you  so you'r in 1st place, not 0.
+	 */
 	public static int placeInLevel(int levelID, int myScore) {
 		HashSet<Integer> greaters = new HashSet<Integer>();
 		try {
@@ -81,6 +95,11 @@ public class DBHelper {
 		return greaters.size()+1;
 	}
 	
+	/**
+	 * @param graph - the graph (level) number
+	 * @return - the the max moves [game_service.move()] allowd to pass this game according to server settings.
+	 * (server has only this levels)
+	 */
 	public static int maxMovesAllaowd(int graph) {
 		switch (graph) {
 		case 0:
@@ -121,6 +140,11 @@ public class DBHelper {
 		}
 	}
 	
+	/**
+	 * @param graph - the graph(level) number
+	 * @return - the minimum points that required to pass this game according to server settings.
+	 * (server has only this levels)
+	 */
 	public static int minGradeNeed(int graph) {
 		switch (graph) {
 		case 0:

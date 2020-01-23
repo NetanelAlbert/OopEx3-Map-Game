@@ -2,13 +2,14 @@ package dataBase;
 
 import java.util.Date;
 
-public class Log {
+public class LogDao {
 	private int userId;
 	private int levelId;
 	private int moves;
 	private Date time;
 	private int score;
-	public Log(int userId, int levelId, int moves, Date time, int score) {
+	
+	public LogDao(int userId, int levelId, int moves, Date time, int score) {
 		this.userId = userId;
 		this.levelId = levelId;
 		this.moves = moves;

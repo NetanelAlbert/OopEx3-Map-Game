@@ -1,6 +1,6 @@
 package gameDataStructure;
 
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.json.JSONArray;
@@ -15,7 +15,7 @@ import Server.game_service;
  * 
  * @author Netanel Albert
  */
-public class RobotsContainer {
+public class RobotsContainer implements Iterable<Robot>{
 	private final game_service gameServer;
 	private final ServerInfo serverInfo;
 
@@ -56,12 +56,17 @@ public class RobotsContainer {
 		}
 	}
 
+	/**
+	 * @return the robot with this id
+	 */
 	public synchronized Robot getRobotByID(int id) {
 		return robots.get(id);
 	}
 	
-	public synchronized Collection<Robot> getRobots() {
-		return robots.values();
+	
+	@Override
+	public Iterator<Robot> iterator() {
+		return robots.values().iterator();
 	}
 
 }

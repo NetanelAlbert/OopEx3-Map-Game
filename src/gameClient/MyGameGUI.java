@@ -19,6 +19,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -31,7 +32,7 @@ import Server.Game_Server;
 import Server.game_service;
 import algorithms.Graph_Algo;
 import dataBase.DBHelper;
-import dataBase.Log;
+import dataBase.LogDao;
 import dataBase.MyGamesData;
 import gameDataStructure.Fruit;
 import gameDataStructure.FruitsContainer;
@@ -77,9 +78,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	private Image robotIMG;
 	private int graphNum;
 	private boolean loggedIn = false;
-
-	private BufferedImage graphImage;
-	// TODO check if need to recreate when change window size
+	private int userId;
 
 	KML_Logger logger;
 
@@ -104,57 +103,54 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	private void login() {
 
-		String idStr = JOptionPane.showInputDialog("Welcome to my game \n" + "Pleas please insert your ID", 0);
-		int id = 0;
+		String idStr = JOptionPane.showInputDialog(
+				resizeMassage("<html>Welcome to my game. <br/>If you want to log in, insert your ID<html>", 20));
+
 		if (idStr != null) {
 			try {
-				id = Integer.valueOf(idStr);
-				loggedIn = Game_Server.login(id);
+				userId = Integer.valueOf(idStr);
+				loggedIn = Game_Server.login(userId);
 				System.out.println("in: " + loggedIn);
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Error", "You have to type an integer Number",
+				JOptionPane.showMessageDialog(null, "You have to type an integer Number", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 			if (loggedIn)
-				JOptionPane.showMessageDialog(null, "Connect", "You are connecting as " + id,
+				JOptionPane.showMessageDialog(null, "You are connecting as " + userId, "Connected",
 						JOptionPane.PLAIN_MESSAGE);
 			else
-				JOptionPane.showMessageDialog(null, "Error", "Connectiom error, pleas try again.",
+				JOptionPane.showMessageDialog(null, "Connectiom error, pleas try again.", "Error",
 						JOptionPane.ERROR_MESSAGE);
 
 		}
-		
-		//if(loggedIn)
-			//showStatistics(id);
-			
 
 	}
-	
+
 	private void showStatistics(int userID) {
-		MyGamesData gameData = DBHelper.myInfo(userID);
-		StringBuilder sb = new StringBuilder("Statistics for id "+userID +"\n");
+
+		MyGamesData gameData = DBHelper.userInfo(userID);
+		StringBuilder sb = new StringBuilder("Statistics for id " + userID + "\n");
 		sb.append("Your level is: ");
 		sb.append(gameData.getCurrentLevel());
 		sb.append(". You played ");
 		sb.append(gameData.getPlayedGames());
 		sb.append(" games. \n\n");
 
-		
 		sb.append("Your best scores: \n");
-		for (Log log : gameData.getTopScors().values()) {
+		for (LogDao log : gameData.getTopScors().values()) {
 			sb.append(log);
 			sb.append("\n");
 		}
-		
+
 		sb.append("\nYour place in levels you reeched: \n");
-		for (Log log : gameData.getTopScors().values()) {
+		for (LogDao log : gameData.getTopScors().values()) {
 			sb.append("Level ");
 			sb.append(log.getLevelId());
 			sb.append(": ");
 			sb.append(DBHelper.placeInLevel(log.getLevelId(), log.getScore()));
 			sb.append("\n");
 		}
-		
+
 		JOptionPane.showMessageDialog(null, sb, "Statistics", JOptionPane.PLAIN_MESSAGE);
 	}
 
@@ -196,7 +192,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 	private void startAutoGame() {
 		manualGame = false;
-		AutoPlayer2 auto = new AutoPlayer2(gameServer, serverInfo, algo, fruits, robots, EPS);
+		AutoPlayer auto = new AutoPlayer(gameServer, serverInfo, algo, fruits, robots, EPS);
 		gameServer.startGame();
 		auto.start();
 	}
@@ -239,29 +235,43 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 							prev = now;
 						}
 
-						Thread.sleep(150);
+						Thread.sleep(130);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				GAME_OVER = true;
-				repaint();
-				logger.closeKml();
-
-				askAndSave();
+				afterGameOperations();
 			}
 
 		};
 		new Thread(r).start();
 	}
 
+	private void afterGameOperations() {
+		GAME_OVER = true;
+		repaint();
+		logger.closeKml();
+
+		askAndSave();
+		if (loggedIn
+				&& JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Do you want to show statistics?"))
+			showStatistics(userId);
+	}
+
+	/**
+	 * Ask the user if he want to save game log locally
+	 */
 	private void askAndSave() {
-		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Do you want to save the game log locally?")) {
+		File kmlFolder = new File("kml");
+		if(!kmlFolder.exists())
+			kmlFolder.mkdir();
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
+				"Do you want to save the game log locally?")) {
 
 			// Taken from
 			// https://www.codejava.net/java-se/swing/show-simple-open-file-dialog-using-jfilechooser
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setCurrentDirectory(new File("kml"));
+			JFileChooser fileChooser = new JFileChooser("kml");
+			
 
 			int result = fileChooser.showOpenDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION) {
@@ -272,9 +282,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				logger.save(path);
 			}
 		}
-		
-		if(loggedIn && serverInfo.getMoves() <= DBHelper.maxMovesAllaowd(graphNum) && serverInfo.getGrade() >= DBHelper.minGradeNeed(graphNum)) {
-			if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "You past this level. \nDo you want to send the game log to server?"))
+
+		if (loggedIn && serverInfo.getMoves() <= DBHelper.maxMovesAllaowd(graphNum)
+				&& serverInfo.getGrade() >= DBHelper.minGradeNeed(graphNum)) {
+			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
+					"You past this level. \nDo you want to send the game log to server?"))
 				gameServer.sendKML(logger.log());
 		}
 	}
@@ -286,18 +298,22 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		DGraph g = null;
 
 		while (g == null) {
-			String scenarioStr = JOptionPane
-					.showInputDialog("Welcome to my game \n" + "Pleas choose scenario (number between 0 to 23)", 0);
+			String scenarioStr = JOptionPane.showInputDialog("Pleas choose scenario (number between 0 to 23)", "0");
 			if (scenarioStr != null) {
 				scenarioStr = scenarioStr.replaceAll(" ", "");
 				try {
-					graphNum = Integer.parseInt(scenarioStr);
-					if (graphNum < 0 || 23 < graphNum)
-						continue;
-
+					if (scenarioStr.equals("test"))
+						graphNum = -31;
+					else {
+						graphNum = Integer.parseInt(scenarioStr);
+						if (graphNum < 0 || 23 < graphNum)
+							continue;
+					}
 					gameServer = Game_Server.getServer(graphNum); // you have [0,23] games
 					String graphStr = gameServer.getGraph();
 					g = new DGraph(new JSONObject(graphStr));
+				} catch (RuntimeException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Server Error", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -307,7 +323,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		algo.init(g);
 		refactorMinMaxXY();
 
-		creatGraphIMG();
 		repaint();
 	}
 
@@ -358,6 +373,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	/**
 	 * Set the meneBar of this window
 	 */
+	@SuppressWarnings("deprecation")
 	private void setMenuBar() {
 		JMenu file;
 		file = new JMenu("File");
@@ -368,21 +384,34 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(newGraph);
 
+		JMenuItem stat = new JMenuItem("Statistics");
+		stat.addActionListener(this);
+		file.add(stat);
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(file);
 
 		setJMenuBar(menuBar);
 	}
 
+	/**
+	 * update the frame according to the current location of the game objects
+	 */
 	@Override
 	public void paint(Graphics g) {
-		if (graphImage == null)
+
+		if (algo == null || algo.getGraph() == null) {
+			super.paint(g);
 			return;
+		}
 
 		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bufferedImage.createGraphics();
-		g2d.drawImage(graphImage, null, 0, 0);
+
 		g2d.setFont(new Font("Courier", Font.PLAIN, 20));
+		super.paintComponents(g2d);
+
+		drawGraph(g2d);
 
 		drawFruits(g2d);
 
@@ -392,9 +421,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 		Graphics2D orgGraphic = (Graphics2D) g;
 		orgGraphic.drawImage(bufferedImage, null, 0, 0);
-		
-		//getJMenuBar().updateUI();
-		// TODO fix menu hiding
+
 	}
 
 	/**
@@ -408,11 +435,11 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 			info += "Points: " + serverInfo.getGrade();
 			if (isRunning(gameServer))
 				info += " | Time: " + gameServer.timeToEnd() / 1000;
-
-			g2d.drawString(info, getWidth() / 4, 80);
+			info += " | Moves: " + serverInfo.getMoves();
+			g2d.drawString(info, getWidth() / 4, 50);
 
 			g2d.drawString("Level: " + graphNum + " | Fruits: " + serverInfo.getFruits() + " | Robots: "
-					+ serverInfo.getRobots(), (getWidth() / 3) * 2, 80);
+					+ serverInfo.getRobots(), (getWidth() / 3) * 2, 50);
 
 			if (GAME_OVER) {
 				g2d.setFont(new Font("Courier", Font.PLAIN, 50));
@@ -431,7 +458,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		if (robots == null)
 			return;
 
-		for (Robot robot : robots.getRobots()) {
+		for (Robot robot : robots) {
 			if (robot != null) {
 				g.setColor(Color.green);
 				int x = scaleX(robot.getPos().x()) - IMAGE_SIZE / 2;
@@ -455,7 +482,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 			return;
 
 		g.setColor(Color.blue);
-		for (Fruit f : fruits.getFruits()) {
+		for (Fruit f : fruits) {
 			int x = scaleX(f.getPos().x()) - IMAGE_SIZE / 2;
 			int y = scaleY(f.getPos().y()) - IMAGE_SIZE / 2;
 			if (f.getType() < 0)
@@ -465,21 +492,6 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 
 			g.drawString(f.getValue() + "", x, y);
 		}
-	}
-
-	private void creatGraphIMG() {
-		graphImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		// Double buffering
-		Graphics2D g2d = graphImage.createGraphics();
-
-		g2d.setBackground(Color.WHITE);
-		super.paint(g2d);
-
-		g2d.setFont(new Font("Courier", Font.PLAIN, 20));
-
-		drawGraph(g2d);
-
 	}
 
 	/**
@@ -500,6 +512,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				drawEdge(g2d, e);
 			}
 		}
+
 	}
 
 	/**
@@ -536,6 +549,19 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 				gameServer.stopGame();
 				initGame();
 
+			}
+			break;
+
+		case "Statistics":
+			String ans = JOptionPane.showInputDialog("Insert your ID");
+			if (ans != null) {
+				try {
+					int userID = Integer.valueOf(ans);
+					showStatistics(userID);
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(null, ans + " is not a valid input", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 
@@ -630,12 +656,9 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		return null;
 	}
 
-	@Override
-	public void validate() {
-		super.validate();
-		creatGraphIMG();
-	}
-
+	/**
+	 * Tell the robot where to go, if on manual game mode
+	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 
@@ -646,7 +669,7 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 		if (destNode == null)
 			return;
 
-		for (Robot rob : robots.getRobots()) {
+		for (Robot rob : robots) {
 			if (rob.getDest() != -1)
 				continue;
 
@@ -658,22 +681,30 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 			}
 		}
 	}
-
+	/**
+	 * Do nothing
+	 */
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
-
+	/**
+	 * Do nothing
+	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
-
+	/**
+	 * Do nothing
+	 */
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// do nothing - need just the 'mouseClicked' but has to implement them all
 	}
-
+	/**
+	 * Do nothing
+	 */
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// do nothing - need just the 'mouseClicked' but has to implement them all
@@ -685,4 +716,14 @@ public class MyGameGUI extends JFrame implements ActionListener, MouseListener {
 	public static synchronized boolean isRunning(game_service gameServe) {
 		return gameServe.isRunning();
 	}
+
+	/**
+	 * Allowed to show message in JOoptioPane with custom font size
+	 */
+	private JLabel resizeMassage(String massage, int size) {
+		JLabel label = new JLabel(massage);
+		label.setFont(new Font("Arial", Font.BOLD, size));
+		return label;
+	}
+
 }

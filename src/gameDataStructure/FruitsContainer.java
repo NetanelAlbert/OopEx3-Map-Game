@@ -1,5 +1,8 @@
 package gameDataStructure;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,7 +15,7 @@ import Server.game_service;
  * 
  * @author Netanel Albert
  */
-public class FruitsContainer {
+public class FruitsContainer implements Iterable<Fruit>{
 	private final game_service gameServer;
 	private final ServerInfo serverInfo;
 	private Fruit[] fruits;
@@ -50,9 +53,26 @@ public class FruitsContainer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Arrays.sort(fruits);
 	}
 	
-	public synchronized Fruit[] getFruits() {
-		return fruits;
+	
+	@Override
+	public Iterator<Fruit> iterator() {
+		return new FruitIterator();
+	}
+	
+	private class FruitIterator implements Iterator<Fruit> {
+		int index = 0;
+		@Override
+		public boolean hasNext() {
+			return index < fruits.length;
+		}
+
+		@Override
+		public Fruit next() {
+			return fruits[index++];
+		}
+		
 	}
 }

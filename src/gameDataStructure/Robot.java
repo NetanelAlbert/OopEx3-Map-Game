@@ -17,7 +17,7 @@ public class Robot {
 	private double speed;
 	private Point3D pos;
 	
-	boolean firstUpdate = true;
+	private boolean firstUpdate = true;
 	
 	/**
 	 * 
@@ -67,6 +67,13 @@ public class Robot {
 	}
 	public Point3D getPos() {
 		return pos;
+	}
+	
+	/**
+	 * @return true if the robot is between 2 vertexes, else false;
+	 */
+	public boolean onMove() {
+		return getDest() != -1;
 	}
 	
 	/**

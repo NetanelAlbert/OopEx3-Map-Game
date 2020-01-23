@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import utils.Point3D;
 
+@SuppressWarnings("serial")
 public class DNode extends HashMap<Integer, edge_data> implements node_data , Comparable<node_data>{
 	private int key;
 	private Point3D location;
@@ -82,6 +83,11 @@ public class DNode extends HashMap<Integer, edge_data> implements node_data , Co
 		}
 	}
 
+	/**
+	 * 
+	 * @param jsonObject - jsonObject with the correct fields. 
+	 * @throws JSONException if the fields arn't exist
+	 */
 	public DNode(JSONObject jsonObject) throws JSONException {
 		this.key = jsonObject.getInt("id");
 		String[] coords = jsonObject.getString("pos").split(",");

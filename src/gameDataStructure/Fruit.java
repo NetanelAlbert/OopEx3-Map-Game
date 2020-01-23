@@ -53,6 +53,7 @@ public class Fruit implements Comparable<Fruit>{
 		return -v.compareTo(f.value);
 	}
 	/**
+	 * for debugging
 	 */
 	@Override
 	public String toString() {

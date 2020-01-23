@@ -289,7 +289,11 @@ public class Graph_Algo implements graph_algorithms {
 		return copy(myGraph);
 	}
 	
-	private DGraph copy(graph g) {
+	/**
+	 * 
+	 * @return a copy of g
+	 */
+	public DGraph copy(graph g) {
 		DGraph copy = new DGraph();
 		Collection<node_data> nodes = g.getV();
 		// copy Nodes

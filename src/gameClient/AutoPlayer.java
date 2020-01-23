@@ -1,7 +1,7 @@
 package gameClient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 import Server.game_service;
@@ -27,17 +27,18 @@ public class AutoPlayer extends Thread {
 	private final FruitsContainer fruits;
 	private final RobotsContainer robots;
 	private final double EPS;
-	// All pairs short distance (dist[i][j] is the length from i to j).
-	private double[][] dist; 
+	// All pairs short distance (dist[i][j] is the distance from i to j).
+	private double[][] dist;
 	private ArrayList<Point3D> handlingFruits = new ArrayList<Point3D>();
 	private TreeMap<Integer, ArrayList<node_data>> robotsTargets = new TreeMap<Integer, ArrayList<node_data>>();
 	private TreeMap<Integer, Long> ETA = new TreeMap<Integer, Long>(); // Estimated Time of Arrival (each robot);
 
 	/**
-	 * Initialize the fields, calculate the shortest distance matrix and place the robots.
+	 * Initialize the fields, calculate the shortest distance matrix and place the
+	 * robots.
 	 * 
 	 * @param algo - the algorithm object with the graph inside it (getGraph()).
-	 * @param EPS - epsilon - for calculations.
+	 * @param EPS  - epsilon - for calculations.
 	 */
 	public AutoPlayer(game_service gameServer, ServerInfo serverInfo, Graph_Algo algo, FruitsContainer fruits,
 			RobotsContainer robots, double EPS) {
@@ -52,7 +53,7 @@ public class AutoPlayer extends Thread {
 		putRobots();
 
 		robots.updateRobots();
-		for (Robot rob : robots.getRobots()) {
+		for (Robot rob : robots) {
 			ArrayList<node_data> targs = new ArrayList<node_data>();
 			targs.add(algo.getGraph().getNode(rob.getSrc()));
 			robotsTargets.put(rob.getId(), targs);
@@ -62,8 +63,8 @@ public class AutoPlayer extends Thread {
 	}
 
 	/**
-	 * The actual play part, mainly update the data and choose where will the robots go.
-	 * Need to call by Start.
+	 * The actual play part, mainly update the data and choose where will the robots
+	 * go. Need to call by Start.
 	 */
 	@Override
 	public void run() {
@@ -83,10 +84,10 @@ public class AutoPlayer extends Thread {
 	}
 
 	private void moveRobots() {
-		for (Robot rob : robots.getRobots()) {
+		for (Robot rob : robots) {
 			if (rob.getDest() == -1)
 				moveRobot(rob);
-			}
+		}
 	}
 
 	private void moveRobot(Robot rob) {
@@ -94,13 +95,11 @@ public class AutoPlayer extends Thread {
 		if (targets.size() > 1) {
 			gameServer.chooseNextEdge(rob.getId(), targets.get(1).getKey());
 			edge_data prvEdge = algo.getGraph().getEdge(targets.get(0).getKey(), targets.get(1).getKey());
-			
 
-			
 			long prvEdgeTime = (long) (prvEdge.getWeight() / rob.getSpeed());
 			ETA.put(rob.getId(), ETA.get(rob.getId()) - prvEdgeTime);
 			targets.remove(0);
-		} else 
+		} else
 			ETA.put(rob.getId(), 0L);
 	}
 
@@ -108,31 +107,29 @@ public class AutoPlayer extends Thread {
 	 * Make sure that all the fruit have a robot that handle (go to) them.
 	 */
 	private void handleFruits() {
-		for (Fruit fruit : fruits.getFruits()) {
+		for (Fruit fruit : fruits) {
 			if (!handlingFruits.contains(fruit.getPos()))
-				if(isOnTheWay(fruit))
+				if (isOnTheWay(fruit))
 					handlingFruits.add(0, fruit.getPos());
 				else
-					handleFruit(fruit);	
+					handleFruit(fruit);
 		}
 	}
-	
-	
 
 	private boolean isOnTheWay(Fruit fruit) {
 		edge_data e = getEdgeByFruit(fruit);
 		for (int robID : robotsTargets.keySet()) {
-			if(isOnList(robotsTargets.get(robID), e))
+			if (isOnPath(robotsTargets.get(robID), e))
 				return true;
 		}
 		return false;
 	}
 
-	private boolean isOnList(ArrayList<node_data> list, edge_data e) {
-		for (int i = 0; i < list.size()-1; i++) {
+	private boolean isOnPath(ArrayList<node_data> list, edge_data e) {
+		for (int i = 0; i < list.size() - 1; i++) {
 			int src = list.get(i).getKey();
-			int dest = list.get(i+1).getKey();
-			if(src == e.getSrc() && dest == e.getDest()) {
+			int dest = list.get(i + 1).getKey();
+			if (src == e.getSrc() && dest == e.getDest()) {
 				return true;
 			}
 		}
@@ -170,16 +167,16 @@ public class AutoPlayer extends Thread {
 		path.remove(0);
 		targets.addAll(path);
 		targets.add(algo.getGraph().getNode(edge.getDest()));
-		
+
 		ETA.put(handlerRobID, eta);
 		handlingFruits.add(0, fruit.getPos());
-		
+
 	}
 
-	
 	private void clearHandlingFruits() {
-		int maxCap = serverInfo.getFruits()+1;
-		while(handlingFruits.size() > maxCap)
+		
+		int maxCap = serverInfo.getFruits() + 1;
+		while (handlingFruits.size() > maxCap)
 			handlingFruits.remove(maxCap);
 	}
 
@@ -204,6 +201,7 @@ public class AutoPlayer extends Thread {
 		}
 		return null;
 	}
+
 	/*
 	 * Use for the dist matrix size, in case that the vertexes number arn't 0 to n
 	 */
@@ -257,12 +255,10 @@ public class AutoPlayer extends Thread {
 	 * should call only once (before starting the game)
 	 */
 	private void putRobots() {
-		Fruit[] f = fruits.getFruits();
-		Arrays.sort(f); // sort by weight - large first.
+		Iterator<Fruit> fruIt = fruits.iterator();
 		for (int i = 0; i < serverInfo.getRobots(); i++) {
-			if (i < f.length) {
-
-				int pos = getEdgeByFruit(f[i]).getSrc();
+			if (fruIt.hasNext()) {
+				int pos = getEdgeByFruit(fruIt.next()).getSrc();
 				gameServer.addRobot(pos);
 			} else {
 				int nodeSize = algo.getGraph().nodeSize();
