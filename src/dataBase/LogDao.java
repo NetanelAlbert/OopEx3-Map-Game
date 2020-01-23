@@ -1,7 +1,11 @@
 package dataBase;
 
 import java.util.Date;
-
+/**
+ * This class represent 1 row from Database
+ * @author Netanel Albert
+ *
+ */
 public class LogDao {
 	private int userId;
 	private int levelId;

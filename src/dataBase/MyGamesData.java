@@ -2,17 +2,27 @@ package dataBase;
 
 import java.util.TreeMap;
 
+/**
+ * 
+ * Holding data of 1 user, mainly reeding from Database
+ * 
+ * @author Netanel Albert
+ *
+ */
 public class MyGamesData {
 	private int playedGames = 0;
 	private int currentLevel = 0;
 	private TreeMap<Integer, LogDao> topScors = new TreeMap<Integer, LogDao>();
 	
+	/**
+	 * Add 1 to playedGames, to count the games.
+	 */
 	public void increedGames() {
 		playedGames++;
 	}
 	
 	/**
-	 * replace currentLevel if the new is higher.
+	 * Replace currentLevel if the new is higher.
 	 */
 	public void CheckSetCurrentLevel(int currentLevel) {
 		if(currentLevel > this.currentLevel)
