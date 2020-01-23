@@ -13,9 +13,9 @@ In the end of each game you can save it to a KML log file and [open](https://sup
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-- [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html)
-- [Eclipse](https://www.eclipse.org/downloads/) or some other IDE
-- [Google Earth](https://www.google.com/intl/iw/earth/versions/)
+- [JDK-11.0.4](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html)
+- [Eclipse](https://www.eclipse.org/downloads/) or some other IDE (recommended)
+- [Google Earth](https://www.google.com/intl/iw/earth/versions/) (recommended, to open kml files)
 
 ### Installing
 
