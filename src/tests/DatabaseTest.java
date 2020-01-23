@@ -11,7 +11,7 @@ class DatabaseTest {
 
 	@Test
 	void userInfoTest() {
-		MyGamesData data = DBHelper.userInfo(-1);
+		MyGamesData data = DBHelper.userInfo(-1); // unexist user
 		assertEquals(0, data.getCurrentLevel());
 		assertEquals(0, data.getPlayedGames());
 		assertEquals(0, data.getTopScors().size());
